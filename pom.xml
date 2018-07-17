@@ -181,7 +181,9 @@
     </pluginManagement>
   </build>
 
-  <modules></modules>
+  <modules>
+    <module>ui</module>
+  </modules>
 
   <profiles>
     <profile>
