@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright 2018 Johannes Donath <johannesd@torchmind.com>
+  ~ and other copyright owners as documented in the project's IP log.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <!-- Artifact Information -->
+  <groupId>io.github.dotstart.helios</groupId>
+  <artifactId>parent</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <!-- Artifact Metadata -->
+  <name>Helios Timer</name>
+  <description>Extremely customizable timer application for Speedrunners.</description>
+  <url>https://github.com/dotStart/Helios</url>
+  <inceptionYear>2018</inceptionYear>
+
+  <licenses>
+    <license>
+      <name>Apache License, Version 2.0</name>
+      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <name>Johannes Donath</name>
+      <email>johannesd@torchmind.com</email>
+      <url>https://www.johannes-donath.com</url>
+      <timezone>Europe/Berlin</timezone>
+
+      <organization>Torchmind</organization>
+      <organizationUrl>https://www.johannes-donath.com</organizationUrl>
+    </developer>
+  </developers>
+
+  <scm>
+    <tag>master</tag>
+    <url>https://github.com/dotStart/Helios</url>
+    <connection>scm:git:git@github.com:/dotStart/Helios.git</connection>
+    <developerConnection>scm:git:git@github.com:/dotStart/Helios.git</developerConnection>
+  </scm>
+
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/dotStart/Helios/issues</url>
+  </issueManagement>
+
+  <ciManagement>
+    <system>GitLab</system>
+    <url>https://gitlab.com/dotStart/Helios/pipelines</url>
+  </ciManagement>
+
+  <!-- Dependencies -->
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>com.google.inject</groupId>
+        <artifactId>guice</artifactId>
+        <version>4.2.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.lesscss</groupId>
+        <artifactId>lesscss</artifactId>
+        <version>1.7.0.1.1</version>
+      </dependency>
+      <dependency>
+        <groupId>net.java.dev.jna</groupId>
+        <artifactId>jna</artifactId>
+        <version>4.5.2</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-annotations</artifactId>
+        <version>2.9.6</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>2.9.6</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.datatype</groupId>
+        <artifactId>jackson-datatype-jsr310</artifactId>
+        <version>2.9.6</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-annotations</artifactId>
+        <version>3.1.5</version>
+        <scope>provided</scope>
+
+        <exclusions>
+          <exclusion>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <!-- Build Settings -->
+  <build>
+    <finalName>${project.groupId}.${project.artifactId}-${project.version}</finalName>
+    <defaultGoal>clean install</defaultGoal>
+
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.7.0</version>
+
+          <configuration>
+            <source>10</source>
+            <target>10</target>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>3.1.0</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>3.0.1</version>
+
+          <executions>
+            <execution>
+              <id>attach-javadocs</id>
+
+              <goals>
+                <goal>jar</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-source-plugin</artifactId>
+          <version>3.0.1</version>
+
+          <executions>
+            <execution>
+              <id>attach-sources</id>
+
+              <goals>
+                <goal>jar-no-fork</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+
+  <modules></modules>
+
+  <profiles>
+    <profile>
+      <id>deployment</id>
+
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>1.6</version>
+
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+</project>
