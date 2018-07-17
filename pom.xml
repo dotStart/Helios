@@ -77,6 +77,12 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
+        <groupId>io.github.dotstart.helios</groupId>
+        <artifactId>di</artifactId>
+        <version>1.0-SNAPSHOT</version>
+      </dependency>
+
+      <dependency>
         <groupId>com.google.inject</groupId>
         <artifactId>guice</artifactId>
         <version>4.2.0</version>
@@ -183,6 +189,7 @@
 
   <modules>
     <module>ui</module>
+    <module>di</module>
   </modules>
 
   <profiles>

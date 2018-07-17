@@ -25,28 +25,18 @@
     <artifactId>parent</artifactId>
     <groupId>io.github.dotstart.helios</groupId>
     <version>1.0-SNAPSHOT</version>
-    <relativePath>..</relativePath>
   </parent>
 
-  <artifactId>ui</artifactId>
+  <artifactId>di</artifactId>
 
   <!-- Artifact Metadata -->
-  <name>Helios Desktop UI</name>
+  <name>Helios Dependency Injection Utilities</name>
 
   <!-- Dependencies -->
   <dependencies>
     <dependency>
-      <groupId>io.github.dotstart.helios</groupId>
-      <artifactId>di</artifactId>
-    </dependency>
-
-    <dependency>
       <groupId>com.google.inject</groupId>
       <artifactId>guice</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.lesscss</groupId>
-      <artifactId>lesscss</artifactId>
     </dependency>
 
     <dependency>
@@ -56,8 +46,6 @@
   </dependencies>
 
   <build>
-    <finalName>HeliosSplit</finalName>
-
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
