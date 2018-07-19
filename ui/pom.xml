@@ -37,6 +37,10 @@
   <dependencies>
     <dependency>
       <groupId>io.github.dotstart.helios</groupId>
+      <artifactId>api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.github.dotstart.helios</groupId>
       <artifactId>di</artifactId>
     </dependency>
 
