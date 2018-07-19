@@ -190,6 +190,7 @@
   <modules>
     <module>ui</module>
     <module>di</module>
+    <module>api</module>
   </modules>
 
   <profiles>
