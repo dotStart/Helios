@@ -57,7 +57,7 @@
 
   <!-- Build Settings -->
   <build>
-    <finalName>HeliosSplit</finalName>
+    <finalName>HeliosTimer</finalName>
 
     <plugins>
       <plugin>
