@@ -106,9 +106,8 @@ public interface Component<N extends Node & ComponentNode, C> {
    * <p>Registers a recursive node updater with the specified observable.</p>
    *
    * <p>The resulting listener will automatically update each child node within the given
-   * collection
-   * when the direction observable is changed. This is the recommended method of passing the layout
-   * direction to child nodes.</p>
+   * collection when the direction observable is changed. This is the recommended method of passing
+   * the layout direction to child nodes.</p>
    *
    * @param direction a direction observable.
    * @param nodes a collection of child nodes.
@@ -202,7 +201,27 @@ public interface Component<N extends Node & ComponentNode, C> {
    * Provides a list of valid timer layout directions.
    */
   enum Direction {
-    HORIZONTAL,
-    VERTICAL
+    HORIZONTAL {
+      @NonNull
+      @Override
+      public Direction invert() {
+        return VERTICAL;
+      }
+    },
+    VERTICAL {
+      @NonNull
+      @Override
+      public Direction invert() {
+        return HORIZONTAL;
+      }
+    };
+
+    /**
+     * Retrieves the inversion for this direction.
+     *
+     * @return an inverted direction.
+     */
+    @NonNull
+    public abstract Direction invert();
   }
 }
