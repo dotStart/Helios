@@ -58,11 +58,16 @@ public class Timer {
    * @throws IllegalStateException when the timer has previously been started.
    */
   public void start() {
+    this.start(System.nanoTime());
+  }
+
+  void start(long nanos) {
     if (this.state.get() != State.WAITING) {
       throw new IllegalStateException("Cannot start timer: Already running");
     }
 
-    this.start = System.nanoTime();
+    this.start = nanos;
+    this.state.set(State.RUNNING);
   }
 
   /**
@@ -72,11 +77,15 @@ public class Timer {
    * @throws IllegalStateException when the timer is not running at the moment.
    */
   public void pause() {
+    this.pause(System.nanoTime());
+  }
+
+  void pause(long nanos) {
     if (this.state.get() != State.RUNNING) {
       throw new IllegalStateException("Cannot pause timer: Not running");
     }
 
-    this.pauseStart = System.nanoTime();
+    this.pauseStart = nanos;
     this.state.set(State.PAUSED);
   }
 
@@ -86,11 +95,15 @@ public class Timer {
    * @throws IllegalStateException when the timer is not paused at the moment.
    */
   public void unpause() {
+    this.unpause(System.nanoTime());
+  }
+
+  void unpause(long nanos) {
     if (this.state.get() != State.PAUSED) {
       throw new IllegalStateException("Cannot un-pause timer: Not paused");
     }
 
-    var delta = System.nanoTime() - this.pauseStart;
+    var delta = nanos - this.pauseStart;
     this.elapsedPauseTime += delta;
     this.state.set(State.RUNNING);
   }
@@ -118,6 +131,10 @@ public class Timer {
    * start.</p>
    */
   public void stop() {
+    this.stop(System.nanoTime());
+  }
+
+  void stop(long nanos) {
     if (this.state.get() != State.RUNNING && this.state.get() != State.PAUSED) {
       throw new IllegalStateException("Cannot stop timer: Not running");
     }
@@ -126,7 +143,7 @@ public class Timer {
       this.unpause();
     }
 
-    this.end = System.nanoTime();
+    this.end = nanos;
     this.state.set(State.STOPPED);
   }
 
