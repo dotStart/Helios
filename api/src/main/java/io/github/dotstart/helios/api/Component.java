@@ -19,6 +19,7 @@ package io.github.dotstart.helios.api;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import io.github.dotstart.helios.api.node.ComponentNode;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Collection;
 import javafx.beans.binding.Bindings;
 import javafx.beans.value.ObservableValue;
@@ -134,7 +135,15 @@ public interface Component<N extends Node & ComponentNode, C> {
    * @return a globally unique component identifier.
    */
   @NonNull
-  URI getURI();
+  default URI getURI() {
+    try {
+      return new URI("helios+component", this.getClass().getPackageName(),
+          this.getClass().getSimpleName(), null);
+    } catch (URISyntaxException ex) {
+      throw new IllegalStateException(
+          "Illegal component URI - Manual URI specification may be required", ex);
+    }
+  }
 
   /**
    * <p>Retrieves a human readable name for this component in its current configuration.</p>
