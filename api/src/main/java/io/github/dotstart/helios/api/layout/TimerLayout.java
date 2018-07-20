@@ -38,6 +38,8 @@ import javafx.scene.Node;
 public class TimerLayout {
 
   private final ObservableList<Node> nodes = FXCollections.observableArrayList();
+  private final ObservableList<Node> nodeView = FXCollections
+      .unmodifiableObservableList(this.nodes);
 
   /**
    * Appends a new component at the end of the layout.
@@ -83,7 +85,8 @@ public class TimerLayout {
    * @return an observable list of initialized component nodes.
    */
   @NonNull
+  @SuppressWarnings("AssignmentOrReturnOfFieldWithMutableType")
   public ObservableList<Node> getNodes() {
-    return FXCollections.unmodifiableObservableList(this.nodes);
+    return this.nodeView;
   }
 }
