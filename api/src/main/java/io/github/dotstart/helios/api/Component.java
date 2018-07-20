@@ -102,6 +102,17 @@ public interface Component<N extends Node & ComponentNode, C> {
     );
   }
 
+  /**
+   * <p>Registers a recursive node updater with the specified observable.</p>
+   *
+   * <p>The resulting listener will automatically update each child node within the given
+   * collection
+   * when the direction observable is changed. This is the recommended method of passing the layout
+   * direction to child nodes.</p>
+   *
+   * @param direction a direction observable.
+   * @param nodes a collection of child nodes.
+   */
   static void registerRecursiveNodeUpdater(@NonNull ObservableValue<Direction> direction,
       @NonNull Collection<? extends Node> nodes) {
     direction.addListener((observable, oldValue, newValue) -> {
