@@ -18,6 +18,7 @@ package io.github.dotstart.helios.api;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import io.github.dotstart.helios.api.node.ComponentNode;
+import java.net.URI;
 import java.util.Collection;
 import javafx.beans.binding.Bindings;
 import javafx.beans.value.ObservableValue;
@@ -122,6 +123,18 @@ public interface Component<N extends Node & ComponentNode, C> {
       setNodeDirection(nodes, newValue);
     });
   }
+
+  /**
+   * <p>Retrieves the globally unique resource identifier for this component.</p>
+   *
+   * <p>This URI is used for identification purposes within serialized versions of the layout and
+   * is expected to follow the following scheme: {@code helios+component://&lt;package&gt;/&lt;component&gt;}
+   * (for instance: {@code helios+component://org.example.helios.package/mycomponent}.</p>
+   *
+   * @return a globally unique component identifier.
+   */
+  @NonNull
+  URI getURI();
 
   /**
    * <p>Retrieves a human readable name for this component in its current configuration.</p>
