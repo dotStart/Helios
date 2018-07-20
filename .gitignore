@@ -38,5 +38,10 @@ buildNumber.properties
 .mvn/timing.properties
 !/.mvn/wrapper/maven-wrapper.jar
 
+### IntelliJ ###
+.idea/
+*.ipr
+*.iml
+*.iws
 
 # End of https://www.gitignore.io/api/java,maven
