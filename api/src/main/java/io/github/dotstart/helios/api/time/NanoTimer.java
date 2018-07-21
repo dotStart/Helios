@@ -198,36 +198,4 @@ public class NanoTimer implements Timer {
   public ReadOnlyObjectProperty<State> stateProperty() {
     return this.state;
   }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public boolean isWaiting() {
-    return this.state.get() == State.WAITING;
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public boolean isPaused() {
-    return this.state.get() == State.PAUSED;
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public boolean isRunning() {
-    return this.state.get() == State.RUNNING || this.state.get() == State.PAUSED;
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public boolean isStopped() {
-    return this.state.get() == State.STOPPED;
-  }
 }

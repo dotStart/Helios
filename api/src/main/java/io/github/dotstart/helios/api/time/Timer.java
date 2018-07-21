@@ -139,14 +139,18 @@ public interface Timer {
    *
    * @return true if waiting.
    */
-  boolean isWaiting();
+  default boolean isWaiting() {
+    return this.getState() == State.WAITING;
+  }
 
   /**
    * Evaluates whether this timer is currently paused.
    *
    * @return true if paused, false otherwise.
    */
-  boolean isPaused();
+  default boolean isPaused() {
+    return this.getState() == State.PAUSED;
+  }
 
   /**
    * Evaluates whether this timer is running (e.g. whether it is currently measuring time or is
@@ -154,14 +158,18 @@ public interface Timer {
    *
    * @return true if running.
    */
-  boolean isRunning();
+  default boolean isRunning() {
+    return this.getState() == State.RUNNING || this.getState() == State.PAUSED;
+  }
 
   /**
    * Evaluates whether this timer has been stopped.
    *
    * @return true if stopped.
    */
-  boolean isStopped();
+  default boolean isStopped() {
+    return this.getState() == State.STOPPED;
+  }
 
   enum State {
     WAITING,
