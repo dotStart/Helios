@@ -17,9 +17,12 @@
 package io.github.dotstart.helios.api.time;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 /**
  * <p>Represents a single timer which may be started at an arbitrary time and (optionally) paused
@@ -41,12 +44,20 @@ import javafx.beans.property.SimpleObjectProperty;
  */
 public class Timer {
 
+  private final StringProperty displayName = new SimpleStringProperty();
   private final ObjectProperty<State> state = new SimpleObjectProperty<>(State.WAITING);
   private long start;
   private long end;
 
   private long pauseStart;
   private long elapsedPauseTime;
+
+  public Timer() {
+  }
+
+  public Timer(@NonNull String displayName) {
+    this.displayName.setValue(displayName);
+  }
 
   /**
    * <p>Starts measuring the passed time.</p>
@@ -187,7 +198,30 @@ public class Timer {
   }
 
   /**
-   * Retrieves the current
+   * <p>Retrieves a human readable name for this timer.</p>
+   *
+   * <p>This value will be displayed within the respective "Compare Against" and similar menus and
+   * additionally persist to the splits file (in order to identify the timer even on systems where
+   * its defining module is not loaded).</p>
+   *
+   * @return a display name.
+   */
+  @Nullable
+  public String getDisplayName() {
+    return this.displayName.get();
+  }
+
+  @NonNull
+  public StringProperty displayNameProperty() {
+    return this.displayName;
+  }
+
+  public void setDisplayName(@Nullable String displayName) {
+    this.displayName.set(displayName);
+  }
+
+  /**
+   * Retrieves the current timer state.
    */
   @NonNull
   public State getState() {
