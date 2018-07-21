@@ -18,17 +18,18 @@ package io.github.dotstart.helios.api.time;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 
 /**
- * <p>Represents a single timer which may be started at an arbitrary time and (optionally) paused
- * at any time.</p>
+ * <p>Represents a timer which keeps track of the total amount of time passed since a certain
+ * origin (epoch).</p>
  *
- * <p>Timers may enter three potential states:</p>
+ * <p>Time will be tracked from the start of the timer (as indicated by {@link #start()}) until
+ * they are stopped (as indicated by {@link #stop()}). Additionally they may be temporarily paused
+ * via the {@link #pause()} and {@link #unpause()} methods. Any time spent in the paused state will
+ * be subtracted from the total.</p>
+ *
+ * <p>Each timer may enter any of the following states:</p>
  *
  * <ul>
  * <li><strong>Waiting</strong> - The timer has been created but not started yet</li>
@@ -38,26 +39,26 @@ import javafx.beans.property.StringProperty;
  * finalized)</li>
  * </ul>
  *
- * <p>Timers are not re-usable (e.g. once they are stopped, they can no longer be altered).</p>
+ * <p>By default timers will be initialized in the {@code waiting} state.</p>
+ *
+ * <p>Timers are not re-usable (e.g. once stopped, a timer cannot be reset and a new timer must be
+ * created in its place instead).</p>
  *
  * @author <a href="mailto:johannesd@torchmind.com">Johannes Donath</a>
  */
-public class Timer {
+public interface Timer {
 
-  private final StringProperty displayName = new SimpleStringProperty();
-  private final ObjectProperty<State> state = new SimpleObjectProperty<>(State.WAITING);
-  private long start;
-  private long end;
-
-  private long pauseStart;
-  private long elapsedPauseTime;
-
-  public Timer() {
-  }
-
-  public Timer(@NonNull String displayName) {
-    this.displayName.setValue(displayName);
-  }
+  /**
+   * <p>Retrieves a human readable name for this timer.</p>
+   *
+   * <p>This value will be displayed within the respective "Compare Against" and similar menus and
+   * additionally persist to the splits file (in order to identify the timer even on systems where
+   * its defining module is not loaded).</p>
+   *
+   * @return a display name.
+   */
+  @Nullable
+  String getDisplayName();
 
   /**
    * <p>Starts measuring the passed time.</p>
@@ -68,18 +69,7 @@ public class Timer {
    *
    * @throws IllegalStateException when the timer has previously been started.
    */
-  public void start() {
-    this.start(System.nanoTime());
-  }
-
-  void start(long nanos) {
-    if (this.state.get() != State.WAITING) {
-      throw new IllegalStateException("Cannot start timer: Already running");
-    }
-
-    this.start = nanos;
-    this.state.set(State.RUNNING);
-  }
+  void start();
 
   /**
    * Temporarily pauses the timer (e.g. stops measuring time from now on until the timer is
@@ -87,37 +77,14 @@ public class Timer {
    *
    * @throws IllegalStateException when the timer is not running at the moment.
    */
-  public void pause() {
-    this.pause(System.nanoTime());
-  }
-
-  void pause(long nanos) {
-    if (this.state.get() != State.RUNNING) {
-      throw new IllegalStateException("Cannot pause timer: Not running");
-    }
-
-    this.pauseStart = nanos;
-    this.state.set(State.PAUSED);
-  }
+  void pause();
 
   /**
    * Un-Pauses the timer.
    *
    * @throws IllegalStateException when the timer is not paused at the moment.
    */
-  public void unpause() {
-    this.unpause(System.nanoTime());
-  }
-
-  void unpause(long nanos) {
-    if (this.state.get() != State.PAUSED) {
-      throw new IllegalStateException("Cannot un-pause timer: Not paused");
-    }
-
-    var delta = nanos - this.pauseStart;
-    this.elapsedPauseTime += delta;
-    this.state.set(State.RUNNING);
-  }
+  void unpause();
 
   /**
    * <p>Toggles the pause state of this timer.</p>
@@ -127,7 +94,7 @@ public class Timer {
    *
    * @throws IllegalStateException when the timer is not running at the moment.
    */
-  public void togglePause() {
+  default void togglePause() {
     if (this.isPaused()) {
       this.unpause();
     } else {
@@ -141,42 +108,14 @@ public class Timer {
    * <p>This method will also cause the timer to calculate the final elapsed time since its
    * start.</p>
    */
-  public void stop() {
-    this.stop(System.nanoTime());
-  }
-
-  void stop(long nanos) {
-    if (this.state.get() != State.RUNNING && this.state.get() != State.PAUSED) {
-      throw new IllegalStateException("Cannot stop timer: Not running");
-    }
-
-    if (this.isPaused()) {
-      this.unpause();
-    }
-
-    this.end = nanos;
-    this.state.set(State.STOPPED);
-  }
+  void stop();
 
   /**
    * Retrieves the total elapsed time (in nanoseconds) within this timer.
    *
    * @return an amount of elapsed nanos.
    */
-  public long getElapsedNanos() {
-    switch (this.state.get()) {
-      case WAITING:
-        return 0;
-      case RUNNING:
-        return System.nanoTime() - this.start - this.elapsedPauseTime;
-      case PAUSED:
-        return this.pauseStart - this.start - this.elapsedPauseTime;
-      case STOPPED:
-        return this.end - this.start - this.elapsedPauseTime;
-    }
-
-    throw new UnsupportedOperationException(); // ?!?!
-  }
+  long getElapsedNanos();
 
   /**
    * Retrieves the total elapsed time (in nanoseconds) without regard for times at which this timer
@@ -184,72 +123,30 @@ public class Timer {
    *
    * @return an amount of elapsed nanos.
    */
-  public long getTotalElapsedNanos() {
-    if (this.state.get() == State.WAITING) {
-      return 0;
-    }
-
-    var end = this.end;
-    if (this.state.get() != State.STOPPED) {
-      end = System.nanoTime();
-    }
-
-    return end - this.start;
-  }
-
-  /**
-   * <p>Retrieves a human readable name for this timer.</p>
-   *
-   * <p>This value will be displayed within the respective "Compare Against" and similar menus and
-   * additionally persist to the splits file (in order to identify the timer even on systems where
-   * its defining module is not loaded).</p>
-   *
-   * @return a display name.
-   */
-  @Nullable
-  public String getDisplayName() {
-    return this.displayName.get();
-  }
-
-  @NonNull
-  public StringProperty displayNameProperty() {
-    return this.displayName;
-  }
-
-  public void setDisplayName(@Nullable String displayName) {
-    this.displayName.set(displayName);
-  }
+  long getTotalElapsedNanos();
 
   /**
    * Retrieves the current timer state.
    */
   @NonNull
-  public State getState() {
-    return this.state.get();
-  }
+  State getState();
 
   @NonNull
-  public ReadOnlyObjectProperty<State> stateProperty() {
-    return this.state;
-  }
+  ReadOnlyObjectProperty<State> stateProperty();
 
   /**
    * Evaluates whether this timer has been created but not yet started.
    *
    * @return true if waiting.
    */
-  public boolean isWaiting() {
-    return this.state.get() == State.WAITING;
-  }
+  boolean isWaiting();
 
   /**
    * Evaluates whether this timer is currently paused.
    *
    * @return true if paused, false otherwise.
    */
-  public boolean isPaused() {
-    return this.state.get() == State.PAUSED;
-  }
+  boolean isPaused();
 
   /**
    * Evaluates whether this timer is running (e.g. whether it is currently measuring time or is
@@ -257,23 +154,16 @@ public class Timer {
    *
    * @return true if running.
    */
-  public boolean isRunning() {
-    return this.state.get() == State.RUNNING || this.state.get() == State.PAUSED;
-  }
+  boolean isRunning();
 
   /**
    * Evaluates whether this timer has been stopped.
    *
    * @return true if stopped.
    */
-  public boolean isStopped() {
-    return this.state.get() == State.STOPPED;
-  }
+  boolean isStopped();
 
-  /**
-   * Provides a list of valid timer states.
-   */
-  public enum State {
+  enum State {
     WAITING,
     RUNNING,
     PAUSED,

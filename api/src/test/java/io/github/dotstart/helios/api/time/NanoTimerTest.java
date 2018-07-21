@@ -16,7 +16,7 @@
  */
 package io.github.dotstart.helios.api.time;
 
-import io.github.dotstart.helios.api.time.Timer.State;
+import io.github.dotstart.helios.api.time.NanoTimer.State;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -30,7 +30,7 @@ import org.junit.jupiter.api.Test;
  *
  * @author <a href="mailto:johannesd@torchmind.com">Johannes Donath</a>
  */
-public class TimerTest {
+public class NanoTimerTest {
 
   private static final long SLEEP_TOLERANCE = 250 * 1000000; // 2s
 
@@ -39,7 +39,7 @@ public class TimerTest {
    */
   @Test
   public void testTime() throws InterruptedException {
-    var timer = new Timer();
+    var timer = new NanoTimer();
     Assertions.assertEquals(State.WAITING, timer.getState());
     Assertions.assertEquals(0, timer.getElapsedNanos());
     Assertions.assertEquals(0, timer.getTotalElapsedNanos());
