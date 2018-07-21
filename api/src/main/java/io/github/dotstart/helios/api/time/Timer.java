@@ -55,6 +55,11 @@ public interface Timer {
   URI REALTIME = URI.create("helios+timer://io.github.dotstart.helios/realtime");
 
   /**
+   * Defines the URI for the in-game timer.
+   */
+  URI IN_GAME = URI.create("helios+timer://io.github.dotstart.helios/ingame");
+
+  /**
    * <p>Retrieves a human readable name for this timer.</p>
    *
    * <p>This value will be displayed within the respective "Compare Against" and similar menus and
