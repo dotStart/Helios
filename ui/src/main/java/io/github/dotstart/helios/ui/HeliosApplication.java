@@ -92,7 +92,6 @@ public class HeliosApplication extends Application {
    */
   @Override
   public void start(@NonNull Stage primaryStage) throws Exception {
-
     var scene = WindowUtility.createScene(this.injector, "/fxml/MainWindow.fxml");
     primaryStage.setScene(scene);
     primaryStage.show();
