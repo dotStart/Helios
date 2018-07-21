@@ -17,7 +17,7 @@
 package io.github.dotstart.helios.api.layout;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
-import io.github.dotstart.helios.api.Component;
+import io.github.dotstart.helios.api.node.Component;
 import io.github.dotstart.helios.api.node.ComponentNode;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

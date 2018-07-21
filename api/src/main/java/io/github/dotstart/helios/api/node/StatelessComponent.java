@@ -14,10 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.dotstart.helios.api;
+package io.github.dotstart.helios.api.node;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
-import io.github.dotstart.helios.api.node.StatelessComponentNode;
 import javafx.scene.Node;
 
 /**

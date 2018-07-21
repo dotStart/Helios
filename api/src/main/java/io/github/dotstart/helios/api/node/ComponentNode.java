@@ -17,7 +17,6 @@
 package io.github.dotstart.helios.api.node;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
-import io.github.dotstart.helios.api.Component;
 import javafx.css.Styleable;
 import javafx.scene.Node;
 

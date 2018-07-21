@@ -18,7 +18,7 @@ package io.github.dotstart.helios.api.layout;
 
 import com.google.inject.Singleton;
 import edu.umd.cs.findbugs.annotations.NonNull;
-import io.github.dotstart.helios.api.Component;
+import io.github.dotstart.helios.api.node.Component;
 import java.net.URI;
 import java.util.Collection;
 import java.util.Collections;

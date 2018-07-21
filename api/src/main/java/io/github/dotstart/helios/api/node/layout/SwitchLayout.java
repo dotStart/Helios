@@ -17,8 +17,8 @@
 package io.github.dotstart.helios.api.node.layout;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
-import io.github.dotstart.helios.api.Component;
-import io.github.dotstart.helios.api.Component.Direction;
+import io.github.dotstart.helios.api.node.Component;
+import io.github.dotstart.helios.api.node.Component.Direction;
 import javafx.beans.DefaultProperty;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
