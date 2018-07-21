@@ -16,6 +16,7 @@
  */
 package io.github.dotstart.helios.di.provider;
 
+import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Provider;
 import edu.umd.cs.findbugs.annotations.NonNull;
@@ -37,6 +38,7 @@ public class FXMLLoaderProvider implements Provider<FXMLLoader> {
 
   private final Injector injector;
 
+  @Inject
   public FXMLLoaderProvider(@NonNull Injector injector) {
     this.injector = injector;
   }
