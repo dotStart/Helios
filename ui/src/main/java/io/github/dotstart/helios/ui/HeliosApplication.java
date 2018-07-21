@@ -85,7 +85,7 @@ public class HeliosApplication extends Application {
       }
     }
 
-    logger.info("system Timer Resolution: %.09f seconds", resolution / 1000000000d);
+    logger.info("system timer resolution: %.09f seconds", resolution / 1000000000d);
   }
 
   /**
