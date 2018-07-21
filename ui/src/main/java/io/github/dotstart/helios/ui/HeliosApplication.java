@@ -59,6 +59,7 @@ public class HeliosApplication extends Application {
     System.out.println("Published under the terms of the Apache License, Version 2.0");
     System.out.println();
 
+    logger.info("nano epoch: %d", System.nanoTime());
     var t = new Thread(HeliosApplication::benchmarkTimerResolution);
     t.setName("benchmark");
     t.run();
