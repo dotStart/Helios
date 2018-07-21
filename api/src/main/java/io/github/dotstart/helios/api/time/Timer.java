@@ -18,6 +18,7 @@ package io.github.dotstart.helios.api.time;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
+import java.net.URI;
 import javafx.beans.property.ReadOnlyObjectProperty;
 
 /**
@@ -47,6 +48,11 @@ import javafx.beans.property.ReadOnlyObjectProperty;
  * @author <a href="mailto:johannesd@torchmind.com">Johannes Donath</a>
  */
 public interface Timer {
+
+  /**
+   * Defines the URI of the real time timer.
+   */
+  URI REALTIME = URI.create("helios+timer://io.github.dotstart.helios/realtime");
 
   /**
    * <p>Retrieves a human readable name for this timer.</p>

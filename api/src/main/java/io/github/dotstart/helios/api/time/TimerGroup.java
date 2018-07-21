@@ -48,12 +48,6 @@ import javafx.collections.ObservableMap;
  */
 public class TimerGroup implements Timer {
 
-  /**
-   * Defines the URI of the real time timer.
-   */
-  public static final URI REALTIME_URI = URI
-      .create("helios+timer://io.github.dotstart.helios/realtime");
-
   private final StringProperty displayName = new SimpleStringProperty();
 
   private final ObservableMap<URI, NanoTimer> timers = FXCollections.observableHashMap();
@@ -66,7 +60,7 @@ public class TimerGroup implements Timer {
   private final Set<NanoTimer> pausedTimers = new HashSet<>();
 
   public TimerGroup() {
-    this.realtimeTimer = this.create(REALTIME_URI, "Realtime");
+    this.realtimeTimer = this.create(REALTIME, "Realtime");
     this.activeTimer.set(this.realtimeTimer);
   }
 
@@ -98,7 +92,7 @@ public class TimerGroup implements Timer {
    * @param id a globally unique timer identifier.
    */
   public void remove(@NonNull URI id) {
-    if (REALTIME_URI.equals(id)) {
+    if (REALTIME.equals(id)) {
       throw new IllegalArgumentException("Cannot remove real time timer");
     }
 
