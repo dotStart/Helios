@@ -20,6 +20,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import io.github.dotstart.helios.di.provider.FXMLLoaderProvider;
+import io.github.dotstart.helios.ui.module.ModuleManager;
 import io.github.dotstart.helios.ui.utility.WindowUtility;
 import java.util.Optional;
 import javafx.application.Application;
@@ -93,6 +94,8 @@ public class HeliosApplication extends Application {
    */
   @Override
   public void start(@NonNull Stage primaryStage) throws Exception {
+    this.injector.getInstance(ModuleManager.class).initializeModules();
+
     var scene = WindowUtility.createScene(this.injector, "/fxml/MainWindow.fxml");
     primaryStage.setScene(scene);
     primaryStage.show();
