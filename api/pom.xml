@@ -61,8 +61,8 @@
     </dependency>
 
     <dependency>
-      <groupId>io.github.dotstart.helios</groupId>
-      <artifactId>api</artifactId>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
     </dependency>
 
     <dependency>
