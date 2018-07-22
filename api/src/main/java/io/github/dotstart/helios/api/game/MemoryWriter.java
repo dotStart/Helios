@@ -24,7 +24,7 @@ import javax.annotation.Nonnull;
  * @param <T> a java primitive type to convert memory to.
  */
 @FunctionalInterface
-public interface MemoryWriter<T> {
+public interface MemoryWriter {
     /**
      * Synchronously perform a write operation.
      *
@@ -34,5 +34,5 @@ public interface MemoryWriter<T> {
      * @return the new value at the address
      */
     @Nonnull
-    T write(@Nonnegative long offset, @Nonnegative T value);
+    byte[] write(@Nonnegative long offset, byte[] value);
 }

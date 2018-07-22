@@ -20,19 +20,17 @@ import javax.annotation.Nonnull;
 
 /**
  * Represents a method of memory access
- *
- * @param <T> a java primitive type to convert memory to.
  */
 @FunctionalInterface
-public interface MemoryReader<T> {
+public interface MemoryReader {
     /**
      * Synchronously perform a read operation.
      *
      * @param offset the memory offset to read at
      * @param length the number of bytes to read
      *
-     * @return a primitive box
+     * @return the memory region as a byte array
      */
     @Nonnull
-    T read(@Nonnegative long offset, @Nonnegative long length);
+    byte[] read(@Nonnegative long offset, @Nonnegative long length);
 }
