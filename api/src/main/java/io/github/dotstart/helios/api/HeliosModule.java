@@ -18,7 +18,6 @@ package io.github.dotstart.helios.api;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
-import io.github.dotstart.helios.api.layout.ComponentRegistry;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -140,40 +139,12 @@ public interface HeliosModule {
   }
 
   /**
-   * <p>Performs a complete module initialization and registration of application components.</p>
-   *
-   * <p>For the purposes of simplification, instances of most module accessible registries will be
-   * provided via the context attribute.</p>
-   *
-   * @param ctx a context.
+   * Performs a complete module initialization and registration of application components.
    */
-  void initialize(@NonNull Context ctx);
+  void initialize();
 
   enum Category {
     COMPONENT,
     GAME_INTEGRATION
-  }
-
-  interface Context {
-
-    /**
-     * <p>Retrieves the version string for the executing instance of Helios.</p>
-     *
-     * <p>This value typically follows the <a href="https://semver.org/">Semantic Versioning</a>
-     * scheme and may thus be compared against in a consistent manner if necessary.</p>
-     *
-     * @return a version number.
-     */
-    @NonNull
-    String getHeliosVersion();
-
-    /**
-     * Retrieves the component registry which is responsible for storing and maintaining component
-     * instances for this application instance.
-     *
-     * @return a component registry.
-     */
-    @NonNull
-    ComponentRegistry componentRegistry();
   }
 }
