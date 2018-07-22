@@ -17,21 +17,29 @@ package io.github.dotstart.helios.api.game;
 
 import javafx.beans.value.ObservableValue;
 
+import javax.annotation.Nullable;
+
 public abstract class MemoryBinding<T> implements ObservableValue<T> {
     public static final long PROT_READ = 1;
     public static final long PROT_WRITE = 1 << 1;
     public static final long PROT_EXEC = 1 << 2;
 
-    private final long offset;
-    private final MemoryBindingType type;
-    private final long length;
-    private long flags;
+    protected final long offset;
+    protected final MemoryBindingType type;
+    protected final long length;
+    protected long flags;
 
-    protected MemoryBinding(long offset, MemoryBindingType type, long length, long flags) {
+    protected MemoryReader reader;
+    protected MemoryWriter writer;
+
+    protected MemoryBinding(long offset, MemoryBindingType type, long length, long flags,
+                            MemoryReader reader, MemoryWriter writer) {
         this.offset = offset;
         this.type = type;
         this.length = length;
         this.flags = flags;
+        this.reader = reader;
+        this.writer = writer;
     }
 
     public long getOffset() {
@@ -55,5 +63,21 @@ public abstract class MemoryBinding<T> implements ObservableValue<T> {
         }
         execute0();
         return true;
+    }
+
+    @Nullable
+    public byte[] read() {
+        if ((flags & PROT_READ) == PROT_READ) {
+            return null;
+        }
+        return reader.read(offset, length);
+    }
+
+    @Nullable
+    public byte[] write(byte[] value) {
+        if ((flags & PROT_WRITE) == PROT_WRITE) {
+            return null;
+        }
+        return writer.write(offset, value);
     }
 }
