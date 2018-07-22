@@ -16,7 +16,7 @@
  */
 package io.github.dotstart.helios.api.time;
 
-import io.github.dotstart.helios.api.time.NanoTimer.State;
+import io.github.dotstart.helios.api.time.Timer.State;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
