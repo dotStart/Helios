@@ -66,7 +66,8 @@ public class TimerComponentNode extends VBox implements
 
     this.stateBinding = Bindings.select(this.timeManager, "timerGroup", "activeTimer", "state");
     this.stateBinding.addListener(this::refreshState);
-    this.refreshState(timeManager.stateProperty(), null, timeManager.getState());
+    this.refreshState(this.stateBinding, null,
+        timeManager.getTimerGroup().getActiveTimer().getState());
 
     this.getChildren().add(this.label);
 
