@@ -152,6 +152,8 @@ public class TimerGroup implements Timer {
 
     var time = System.nanoTime();
     this.timers.values().forEach((t) -> t.start(time));
+
+    this.state.set(State.RUNNING);
   }
 
   /**
@@ -172,6 +174,8 @@ public class TimerGroup implements Timer {
     this.pausedTimers.addAll(running);
 
     running.forEach((t) -> t.pause(time));
+
+    this.state.set(State.PAUSED);
   }
 
   /**
@@ -185,6 +189,8 @@ public class TimerGroup implements Timer {
 
     var time = System.nanoTime();
     this.pausedTimers.forEach((t) -> t.unpause(time));
+
+    this.state.set(State.RUNNING);
   }
 
   /**
@@ -198,6 +204,8 @@ public class TimerGroup implements Timer {
 
     var time = System.nanoTime();
     this.timers.values().forEach((t) -> t.stop(time));
+
+    this.state.set(State.STOPPED);
   }
 
   /**
