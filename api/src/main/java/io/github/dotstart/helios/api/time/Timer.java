@@ -182,10 +182,64 @@ public interface Timer {
     return this.getState() == State.STOPPED;
   }
 
+  /**
+   * <p>Converts the elapsed time into a human readable format.</p>
+   *
+   * <p>The respective passed precision value defines the smallest unit displayed within the timer.
+   * For instance: A precision of {@link FormatPrecision#SECONDS} will result in a time formatted as
+   * {@code HH:mm:ss} while {@link FormatPrecision#MILLISECONDS} would result in {@code
+   * HH:mm:ss:SSS}.</p>
+   *
+   * @return a human readable version of the elapsed time.
+   */
+  @NonNull
+  default String toString(@NonNull FormatPrecision precision) {
+    var out = "";
+    var val = this.getElapsedNanos();
+
+    long nanos = val % 1000000;
+    val /= 1000000;
+    long millis = val % 1000;
+    val /= 1000;
+    long seconds = val % 60;
+    val /= 60;
+    long minutes = val % 60;
+    val /= 60;
+
+    if (val > 0) {
+      out += val;
+      out += ":";
+    }
+    out += String.format("%02d", minutes);
+    out += ":";
+    out += String.format("%02d", seconds);
+
+    if (precision == FormatPrecision.SECONDS) {
+      return out;
+    }
+
+    if (precision == FormatPrecision.MILLISECONDS) {
+      out += ".";
+      out += String.format("%03d", millis);
+      return out;
+    }
+
+    out += ".";
+    out += String.format("%03d", millis);
+    out += String.format("%06d", nanos);
+    return out;
+  }
+
   enum State {
     WAITING,
     RUNNING,
     PAUSED,
     STOPPED
+  }
+
+  enum FormatPrecision {
+    SECONDS,
+    MILLISECONDS,
+    NANOSECONDS
   }
 }
