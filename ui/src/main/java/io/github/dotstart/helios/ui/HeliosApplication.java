@@ -68,7 +68,7 @@ public class HeliosApplication extends Application {
     logger.info("nano epoch: %d", System.nanoTime());
     var t = new Thread(HeliosApplication::benchmarkTimerResolution);
     t.setName("benchmark");
-    t.run();
+    t.start();
 
     Application.launch(HeliosApplication.class, arguments);
   }
