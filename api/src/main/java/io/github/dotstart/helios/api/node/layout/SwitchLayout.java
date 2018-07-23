@@ -27,10 +27,12 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * <p>Provides a layout component which permits switching between a horizontal and vertical
@@ -42,12 +44,14 @@ import javafx.scene.layout.VBox;
  *
  * @author <a href="mailto:johannesd@torchmind.com">Johannes Donath</a>
  */
-@DefaultProperty("children")
-public class SwitchLayout extends AnchorPane {
+@DefaultProperty("nodes")
+public class SwitchLayout extends StackPane {
+
+  private final Logger logger = LogManager.getFormatterLogger(SwitchLayout.class);
 
   private final ObservableValue<Direction> direction = Component.createDirectionObservable(this);
   private final BooleanProperty inverted = new SimpleBooleanProperty();
-  private final ObservableList<Node> children = FXCollections.observableArrayList();
+  private final ObservableList<Node> node = FXCollections.observableArrayList();
 
   private Pane contentPane;
 
@@ -63,7 +67,7 @@ public class SwitchLayout extends AnchorPane {
     });
     this.inverted
         .addListener((observable, oldValue, newValue) -> this.rebuild(this.direction.getValue()));
-    Component.registerRecursiveNodeUpdater(this.direction, this.children);
+    Component.registerRecursiveNodeUpdater(this.direction, this.node);
   }
 
   /**
@@ -72,9 +76,11 @@ public class SwitchLayout extends AnchorPane {
    * @param direction a direction.
    */
   private void rebuild(@NonNull Direction direction) {
-    super.getChildren().clear();
+    this.logger.debug("Rebuilding layout consisting of %d nodes", this.node.size());
+
+    getChildren().clear();
     if (this.contentPane != null) {
-      Bindings.unbindContent(this.contentPane.getChildren(), this.children);
+      Bindings.unbindContent(this.contentPane.getChildren(), this.node);
     }
 
     if (this.inverted.get()) {
@@ -90,8 +96,8 @@ public class SwitchLayout extends AnchorPane {
         break;
     }
 
-    Bindings.bindContent(this.contentPane.getChildren(), this.children);
-    super.getChildren().add(this.contentPane);
+    Bindings.bindContent(this.contentPane.getChildren(), this.node);
+    this.getChildren().add(this.contentPane);
   }
 
   /**
@@ -130,9 +136,8 @@ public class SwitchLayout extends AnchorPane {
    * {@inheritDoc}
    */
   @NonNull
-  @Override
   @SuppressWarnings("AssignmentOrReturnOfFieldWithMutableType")
-  public ObservableList<Node> getChildren() {
-    return this.children;
+  public ObservableList<Node> getNodes() {
+    return this.node;
   }
 }
