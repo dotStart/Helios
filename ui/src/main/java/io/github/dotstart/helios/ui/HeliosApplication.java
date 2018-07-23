@@ -99,6 +99,8 @@ public class HeliosApplication extends Application {
    */
   @Override
   public void start(@NonNull Stage primaryStage) throws Exception {
+    Thread.currentThread().setName("ui");
+
     printCapabilities();
     this.injector.getInstance(ModuleManager.class).initializeModules();
 
