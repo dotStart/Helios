@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.dotstart.helios.api.split;
+package io.github.dotstart.helios.api.time.split;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import io.github.dotstart.helios.api.time.TimerGroup;
