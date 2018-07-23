@@ -23,10 +23,6 @@
     </Console>
   </Appenders>
   <Loggers>
-    <Logger name="org.apache.http.impl.conn" level="debug" />
-    <Logger name="org.apache.http.impl.client" level="debug" />
-    <Logger name="org.apache.http.client" level="debug" />
-
     <Root level="info">
       <AppenderRef ref="Console"/>
     </Root>
