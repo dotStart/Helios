@@ -120,6 +120,16 @@ public class TimerGroup implements Timer {
   }
 
   /**
+   * Retrieves the timer against which the application is currently comparing.
+   *
+   * @return a timer.
+   */
+  @NonNull
+  public NanoTimer getActiveTimer() {
+    return this.activeTimer.get();
+  }
+
+  /**
    * Switches the active timer.
    *
    * @param timer a timer.
@@ -130,6 +140,11 @@ public class TimerGroup implements Timer {
     }
 
     this.activeTimer.set(timer);
+  }
+
+  @NonNull
+  public ReadOnlyObjectProperty<NanoTimer> activeTimerProperty() {
+    return this.activeTimer;
   }
 
   /**
