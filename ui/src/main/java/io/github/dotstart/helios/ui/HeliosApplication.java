@@ -24,8 +24,11 @@ import io.github.dotstart.helios.ui.module.ModuleManager;
 import io.github.dotstart.helios.ui.utility.WindowUtility;
 import java.util.Optional;
 import javafx.application.Application;
+import javafx.application.ConditionalFeature;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -94,9 +97,13 @@ public class HeliosApplication extends Application {
    */
   @Override
   public void start(@NonNull Stage primaryStage) throws Exception {
+    var transparencyAvailable = Platform.isSupported(ConditionalFeature.TRANSPARENT_WINDOW);
+    logger.info("transparent windows supported: %s", transparencyAvailable);
+
     this.injector.getInstance(ModuleManager.class).initializeModules();
 
     var scene = WindowUtility.createScene(this.injector, "/fxml/MainWindow.fxml");
+    primaryStage.initStyle(transparencyAvailable ? StageStyle.TRANSPARENT : StageStyle.UNDECORATED);
     primaryStage.setScene(scene);
     primaryStage.show();
   }
