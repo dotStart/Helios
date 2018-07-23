@@ -22,7 +22,9 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 import io.github.dotstart.helios.di.provider.FXMLLoaderProvider;
 import io.github.dotstart.helios.ui.module.ModuleManager;
 import io.github.dotstart.helios.ui.utility.WindowUtility;
+import java.util.EnumSet;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import javafx.application.Application;
 import javafx.application.ConditionalFeature;
 import javafx.application.Platform;
@@ -97,14 +99,25 @@ public class HeliosApplication extends Application {
    */
   @Override
   public void start(@NonNull Stage primaryStage) throws Exception {
-    var transparencyAvailable = Platform.isSupported(ConditionalFeature.TRANSPARENT_WINDOW);
-    logger.info("transparent windows supported: %s", transparencyAvailable);
-
+    printCapabilities();
     this.injector.getInstance(ModuleManager.class).initializeModules();
 
     var scene = WindowUtility.createScene(this.injector, "/fxml/MainWindow.fxml");
+    var transparencyAvailable = Platform.isSupported(ConditionalFeature.TRANSPARENT_WINDOW);
     primaryStage.initStyle(transparencyAvailable ? StageStyle.TRANSPARENT : StageStyle.UNDECORATED);
     primaryStage.setScene(scene);
     primaryStage.show();
+  }
+
+  /**
+   * Writes all available JavaFX conditional features to the log.
+   */
+  private static void printCapabilities() {
+    var supported = EnumSet.allOf(ConditionalFeature.class).stream()
+        .filter(Platform::isSupported)
+        .map(ConditionalFeature::toString)
+        .collect(Collectors.joining(", "));
+
+    logger.info("available JavaFX features: %s", supported);
   }
 }
