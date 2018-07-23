@@ -25,6 +25,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.css.PseudoClass;
 import javafx.css.Styleable;
 import javafx.scene.Node;
+import org.apache.logging.log4j.LogManager;
 
 /**
  * <p>Provides a base interface for splitter components (such as timers, graphs or titles).</p>
@@ -217,6 +218,28 @@ public interface Component<N extends Node & ComponentNode, C> {
    */
   @NonNull
   N loadNode(@NonNull C conf);
+
+  /**
+   * Generates a globally unique class name for the specified component.
+   *
+   * @param component a component definition.
+   */
+  @NonNull
+  static String getGeneratedClassName(@NonNull Component<?, ?> component) {
+    var uri = component.getURI();
+    return uri.getHost().replace(".", "_") + "___" + uri.getPath().replace("/", "_");
+  }
+
+  /**
+   * Logs all relevant component details to the debug log.
+   */
+  default void logComponentDetails() {
+    var logger = LogManager.getFormatterLogger(this.getClass());
+    var uri = this.getURI();
+
+    logger.debug("=> component %s", uri);
+    logger.debug("style class: %s", getGeneratedClassName(this));
+  }
 
   /**
    * Provides a list of valid timer layout directions.

@@ -58,4 +58,17 @@ public interface ComponentNode<N extends Node & ComponentNode<N, C>, C> extends 
    */
   @NonNull
   C configuration();
+
+  /**
+   * Appends the component class name to the specified stylable component node.
+   *
+   * @param node a node.
+   */
+  static void setGeneratedClassName(@NonNull ComponentNode<?, ?> node) {
+    var name = Component.getGeneratedClassName(node.definition());
+
+    if (!node.getStyleClass().contains(name)) {
+      node.getStyleClass().add(name);
+    }
+  }
 }
