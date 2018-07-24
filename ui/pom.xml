@@ -55,8 +55,8 @@
       <version>4.2.0</version>
     </dependency>
     <dependency>
-      <groupId>org.lesscss</groupId>
-      <artifactId>lesscss</artifactId>
+      <groupId>io.bit3</groupId>
+      <artifactId>jsass</artifactId>
     </dependency>
 
     <dependency>

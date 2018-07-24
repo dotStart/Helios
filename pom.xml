@@ -94,9 +94,9 @@
         <classifier>no_aop</classifier>
       </dependency>
       <dependency>
-        <groupId>org.lesscss</groupId>
-        <artifactId>lesscss</artifactId>
-        <version>1.7.0.1.1</version>
+        <groupId>io.bit3</groupId>
+        <artifactId>jsass</artifactId>
+        <version>5.7.3</version>
       </dependency>
       <dependency>
         <groupId>net.java.dev.jna</groupId>
