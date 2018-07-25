@@ -26,6 +26,7 @@ import com.google.inject.util.Types;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import io.github.dotstart.helios.api.HeliosModule;
 import io.github.dotstart.helios.api.HeliosModuleMetadata;
+import io.github.dotstart.helios.ui.theme.ThemeManager;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -95,6 +96,9 @@ public class ModuleManager {
     });
 
     logger.info("");
+
+    logger.info("performing initial theme generation (this may take a few seconds)");
+    this.injector.getInstance(ThemeManager.class).refresh();
   }
 
   /**
