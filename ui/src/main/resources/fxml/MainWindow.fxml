@@ -19,6 +19,7 @@
 <SwitchLayout xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
   fx:id="componentPane"
   fx:controller="io.github.dotstart.helios.ui.controller.MainWindow"
+  styleClass="helios"
   prefHeight="400.0"
   prefWidth="600.0">
 </SwitchLayout>
