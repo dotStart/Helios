@@ -21,6 +21,7 @@ import com.google.inject.Injector;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import io.github.dotstart.helios.di.provider.FXMLLoaderProvider;
 import io.github.dotstart.helios.ui.module.ModuleManager;
+import io.github.dotstart.helios.ui.theme.ThemeManager;
 import io.github.dotstart.helios.ui.utility.WindowUtility;
 import java.util.EnumSet;
 import java.util.Optional;
@@ -105,6 +106,8 @@ public class HeliosApplication extends Application {
     this.injector.getInstance(ModuleManager.class).initializeModules();
 
     var scene = WindowUtility.createScene(this.injector, "/fxml/MainWindow.fxml");
+    this.injector.getInstance(ThemeManager.class).hookScene(scene);
+
     var transparencyAvailable = Platform.isSupported(ConditionalFeature.TRANSPARENT_WINDOW);
     primaryStage.initStyle(transparencyAvailable ? StageStyle.TRANSPARENT : StageStyle.UNDECORATED);
     primaryStage.setScene(scene);
