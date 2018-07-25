@@ -16,10 +16,16 @@
  */
 package io.github.dotstart.helios.api.node;
 
+import edu.umd.cs.findbugs.annotations.CreatesObligation;
 import edu.umd.cs.findbugs.annotations.NonNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
+import io.github.dotstart.helios.api.theme.variable.VariableDefinition;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
 import javafx.beans.binding.Bindings;
 import javafx.beans.value.ObservableValue;
 import javafx.css.PseudoClass;
@@ -218,6 +224,38 @@ public interface Component<N extends Node & ComponentNode, C> {
    */
   @NonNull
   N loadNode(@NonNull C conf);
+
+  /**
+   * <p>Retrieves the stylesheet resource for this component.</p>
+   *
+   * <p>When no special stylesheet is desired, null will be returned instead. In this case, no
+   * stylesheet processing will be performed for this component (e.g. the return value of {@link
+   * #getStyleVariables()} will be ignored).</p>
+   *
+   * <p>Note that this behavior is not recommended as the global styles are rather rudimentary.</p>
+   *
+   * @return a style resource stream.
+   */
+  @Nullable
+  @CreatesObligation
+  default InputStream getStyleResource() {
+    return null;
+  }
+
+  /**
+   * <p>Retrieves a list of variable definitions provided by this component.</p>
+   *
+   * <p>The elements within this list will effectively be used to facilitate the generation of the
+   * component stylesheet using a mixture of default and user defined style variables. When multiple
+   * components share the same definitions, a single shared variable instance should be returned
+   * instead.</p>
+   *
+   * @return a style variable.
+   */
+  @NonNull
+  default Set<VariableDefinition> getStyleVariables() {
+    return Collections.emptySet();
+  }
 
   /**
    * Generates a globally unique class name for the specified component.
