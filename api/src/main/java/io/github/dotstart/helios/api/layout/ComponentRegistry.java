@@ -51,6 +51,7 @@ public class ComponentRegistry {
           "Component with identifier \"" + component.getURI() + "\" has already been registered");
     }
 
+    component.logComponentDetails();
     this.registry.put(component.getURI(), component);
   }
 
