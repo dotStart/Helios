@@ -41,9 +41,12 @@
       <classifier>no_aop</classifier>
     </dependency>
     <dependency>
+      <groupId>io.bit3</groupId>
+      <artifactId>jsass</artifactId>
+    </dependency>
+    <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-buffer</artifactId>
-      <version>4.1.26.Final</version>
     </dependency>
 
     <dependency>
