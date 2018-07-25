@@ -19,6 +19,7 @@ package io.github.dotstart.helios.ui.module.component.node;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import io.github.dotstart.helios.api.node.Component;
+import io.github.dotstart.helios.api.node.ComponentNode;
 import io.github.dotstart.helios.api.node.StatelessComponentNode;
 import io.github.dotstart.helios.api.time.TimeManager;
 import io.github.dotstart.helios.api.time.Timer.FormatPrecision;
@@ -73,6 +74,8 @@ public class TimerComponentNode extends VBox implements
 
     this.timeline.setCycleCount(Timeline.INDEFINITE);
     this.timeline.play();
+
+    ComponentNode.setGeneratedClassName(this);
   }
 
   /**
