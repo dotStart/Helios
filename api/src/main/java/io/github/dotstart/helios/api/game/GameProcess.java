@@ -23,6 +23,13 @@ import javax.annotation.Nullable;
  * Represents the remote game process whose memory is being scanned.
  */
 public interface GameProcess {
+
+    /**
+     * Get the handle for the given process.
+     */
+    @Nonnull
+    ProcessHandle getHandle();
+
     /**
      * Get the base memory address of the process to bypass ASLR
      */

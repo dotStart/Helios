@@ -17,7 +17,7 @@ package io.github.dotstart.helios.api.game;
 
 import com.google.inject.BindingAnnotation;
 
-import javax.annotation.Nonnegative;
+import javax.annotation.RegEx;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -25,21 +25,16 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Represents a binding to a particular memory address. May annotate either a
- * <p>byte[]</p> field with a fixed size, or any java primitive. In the latter case,
- * the equivalent of a C++ <p>reinterpret_cast</p> will be applied to a memory
- * region the same size or smaller than the byte-aligned size of the primitive.
+ * Binds a {@link GameProcess} field to a specific process.
  */
 @BindingAnnotation
-@Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface BindAddress {
+public @interface BindProcess {
     /**
-     * The offset from the process's base address.
-     *
-     * @return a fixed memory offset
+     * Regex matcher for the process name.
      */
-    @Nonnegative
-    long value();
+    @RegEx
+    String value();
 }

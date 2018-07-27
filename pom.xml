@@ -220,6 +220,7 @@
     <module>api</module>
     <module>di</module>
     <module>ui</module>
+    <module>game</module>
   </modules>
 
   <profiles>
