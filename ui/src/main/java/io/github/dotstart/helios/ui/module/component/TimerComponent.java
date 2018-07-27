@@ -19,9 +19,11 @@ package io.github.dotstart.helios.ui.module.component;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import edu.umd.cs.findbugs.annotations.NonNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
 import io.github.dotstart.helios.api.node.StatelessComponent;
 import io.github.dotstart.helios.api.time.TimeManager;
 import io.github.dotstart.helios.ui.module.component.node.TimerComponentNode;
+import java.io.InputStream;
 
 /**
  * <p>Provides a timer component.</p>
@@ -68,5 +70,11 @@ public class TimerComponent implements StatelessComponent<TimerComponentNode> {
   @Override
   public TimerComponentNode createNode() {
     return new TimerComponentNode(this, this.timeManager);
+  }
+
+  @Nullable
+  @Override
+  public InputStream getStyleResource() {
+    return this.getClass().getResourceAsStream("/stylesheet/TimerComponent.scss");
   }
 }
