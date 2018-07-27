@@ -32,14 +32,14 @@ public abstract class MemoryBinding<T> implements ObservableValue<T> {
     protected MemoryReader reader;
     protected MemoryWriter writer;
 
-    protected MemoryBinding(long offset, MemoryBindingType type, long length, long flags,
-                            MemoryReader reader, MemoryWriter writer) {
+    protected <T extends MemoryReader & MemoryWriter> MemoryBinding(long offset, MemoryBindingType type, long length, long flags,
+                            T accessor) {
         this.offset = offset;
         this.type = type;
         this.length = length;
         this.flags = flags;
-        this.reader = reader;
-        this.writer = writer;
+        this.reader = accessor;
+        this.writer = accessor;
     }
 
     public long getOffset() {
