@@ -16,4 +16,10 @@
  */
 .helios {
   -fx-background-color: #{themeVariable("helios+theme://io.dotstart.github.helios/backgroundColor")};
+
+  .label {
+    -fx-font-size: 12px; // TODO: Replace with font chooser
+    -fx-font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif;
+    -fx-text-fill: #{themeVariable("helios+theme://io.dotstart.github.helios/textColor")};
+  }
 }

@@ -69,6 +69,11 @@ public class ThemeManager implements AutoCloseable {
           "helios+theme://io.dotstart.github.helios/backgroundColor",
           "Background Color", "Specifies the window background color",
           SolidColor.BLACK
+      ),
+      new ColorVariableDefinition(
+          "helios+theme://io.dotstart.github.helios/textColor",
+          "Text Color", "Specifies the standard text color",
+          SolidColor.WHITE
       )
   );
 
