@@ -17,6 +17,7 @@
 package io.github.dotstart.helios.api.theme.variable.color;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
 import io.github.dotstart.helios.api.theme.variable.AbstractVariableDefinition;
 import java.net.URI;
 
@@ -31,13 +32,13 @@ public class ColorVariableDefinition extends AbstractVariableDefinition {
   private final Color defaultValue;
 
   public ColorVariableDefinition(@NonNull URI uri, @NonNull String displayName,
-      @NonNull String description, @NonNull Color defaultValue) {
+      @NonNull String description, @Nullable Color defaultValue) {
     super(uri, displayName, description);
     this.defaultValue = defaultValue;
   }
 
   public ColorVariableDefinition(@NonNull String uri, @NonNull String displayName,
-      @NonNull String description, @NonNull Color defaultValue) {
+      @NonNull String description, @Nullable Color defaultValue) {
     super(uri, displayName, description);
     this.defaultValue = defaultValue;
   }

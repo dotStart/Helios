@@ -17,6 +17,7 @@
 package io.github.dotstart.helios.api.theme.variable.color;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
 import io.github.dotstart.helios.api.theme.variable.AbstractVariable;
 import io.github.dotstart.helios.api.theme.variable.Variable;
 import io.netty.buffer.ByteBuf;
@@ -34,9 +35,9 @@ public class ColorVariable extends AbstractVariable {
 
   private final ObjectProperty<Color> color = new SimpleObjectProperty<>();
 
-  public ColorVariable(@NonNull URI uri, @NonNull Color initialValue) {
+  public ColorVariable(@NonNull URI uri, @Nullable Color initialValue) {
     super(uri);
-    this.color.setValue(initialValue);
+    this.color.set(initialValue);
   }
 
   /**
@@ -67,6 +68,10 @@ public class ColorVariable extends AbstractVariable {
     }
 
     var typeIndex = buf.readUnsignedByte();
+    if (typeIndex == 0) {
+      return;
+    }
+    --typeIndex;
     if (typeIndex > ColorType.values().length) {
       throw new IllegalArgumentException(
           "Illegal color value: 0 <= i < " + ColorType.values().length + " but was " + typeIndex);
@@ -81,9 +86,14 @@ public class ColorVariable extends AbstractVariable {
    */
   @Override
   public void write(@NonNull ByteBuf buf) {
-    buf.ensureWritable(4);
+    buf.ensureWritable(1);
 
     var c = this.color.get();
+    if (c == null) {
+      buf.writeByte(0);
+      return;
+    }
+    buf.writeByte(c.getType().ordinal() + 1);
     c.write(buf);
   }
 
@@ -94,15 +104,20 @@ public class ColorVariable extends AbstractVariable {
   @Override
   public String toCss() {
     var c = this.color.getValue();
+
+    if (c == null) {
+      return "inherit";
+    }
+
     return c.toCssInstruction();
   }
 
-  @NonNull
+  @Nullable
   public Color getColor() {
     return this.color.get();
   }
 
-  public void setColor(@NonNull Color color) {
+  public void setColor(@Nullable Color color) {
     this.color.set(color);
   }
 
