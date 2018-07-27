@@ -14,16 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.dotstart.helios.api.theme.variable;
+package io.github.dotstart.helios.api.theme.variable.color;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
-import io.bit3.jsass.type.SassColor;
+import io.github.dotstart.helios.api.theme.variable.AbstractVariable;
+import io.github.dotstart.helios.api.theme.variable.Variable;
 import io.netty.buffer.ByteBuf;
 import java.net.URI;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.Node;
-import javafx.scene.paint.Color;
 
 /**
  * Provides a variable which stores an arbitrary color value.
@@ -62,16 +62,18 @@ public class ColorVariable extends AbstractVariable {
    */
   @Override
   public void read(@NonNull ByteBuf buf) {
-    if (!buf.isReadable(4)) {
-      throw new IllegalArgumentException("Illegal color value: At least 4 bytes required");
+    if (!buf.isReadable(1)) {
+      throw new IllegalArgumentException("Illegal color value: At least one byte required");
     }
 
-    var r = buf.readUnsignedByte();
-    var g = buf.readUnsignedByte();
-    var b = buf.readUnsignedByte();
-    var a = buf.readUnsignedByte();
+    var typeIndex = buf.readUnsignedByte();
+    if (typeIndex > ColorType.values().length) {
+      throw new IllegalArgumentException(
+          "Illegal color value: 0 <= i < " + ColorType.values().length + " but was " + typeIndex);
+    }
 
-    this.color.setValue(Color.rgb((int) r, (int) g, (int) b, a / 255d));
+    var type = ColorType.values()[typeIndex];
+    this.color.set(type.read(buf));
   }
 
   /**
@@ -81,11 +83,8 @@ public class ColorVariable extends AbstractVariable {
   public void write(@NonNull ByteBuf buf) {
     buf.ensureWritable(4);
 
-    var c = this.color.getValue();
-    buf.writeByte((int) Math.round(c.getRed() * 255));
-    buf.writeByte((int) Math.round(c.getGreen() * 255));
-    buf.writeByte((int) Math.round(c.getBlue() * 255));
-    buf.writeByte((int) Math.round(c.getOpacity() * 255));
+    var c = this.color.get();
+    c.write(buf);
   }
 
   /**
@@ -93,14 +92,9 @@ public class ColorVariable extends AbstractVariable {
    */
   @NonNull
   @Override
-  public SassColor toCss() {
+  public String toCss() {
     var c = this.color.getValue();
-    return new SassColor(
-        c.getRed(),
-        c.getGreen(),
-        c.getBlue(),
-        c.getOpacity()
-    );
+    return c.toCssInstruction();
   }
 
   @NonNull

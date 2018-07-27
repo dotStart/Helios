@@ -26,9 +26,10 @@ import io.bit3.jsass.Options;
 import io.github.dotstart.helios.api.layout.ComponentRegistry;
 import io.github.dotstart.helios.api.node.Component;
 import io.github.dotstart.helios.api.theme.Theme;
-import io.github.dotstart.helios.api.theme.variable.ColorVariableDefinition;
 import io.github.dotstart.helios.api.theme.variable.Variable;
 import io.github.dotstart.helios.api.theme.variable.VariableDefinition;
+import io.github.dotstart.helios.api.theme.variable.color.ColorVariableDefinition;
+import io.github.dotstart.helios.api.theme.variable.color.SolidColor;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
@@ -46,7 +47,6 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
-import javafx.scene.paint.Color;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -68,7 +68,7 @@ public class ThemeManager implements AutoCloseable {
       new ColorVariableDefinition(
           "helios+theme://io.dotstart.github.helios/backgroundColor",
           "Background Color", "Specifies the window background color",
-          Color.rgb(0, 0, 0)
+          SolidColor.BLACK
       )
   );
 

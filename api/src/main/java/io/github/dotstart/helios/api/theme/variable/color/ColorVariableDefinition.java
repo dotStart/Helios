@@ -14,11 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.dotstart.helios.api.theme.variable;
+package io.github.dotstart.helios.api.theme.variable.color;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
+import io.github.dotstart.helios.api.theme.variable.AbstractVariableDefinition;
 import java.net.URI;
-import javafx.scene.paint.Color;
 
 /**
  * Provides a variable which stores an arbitrary color value (for instance, to describe the color of

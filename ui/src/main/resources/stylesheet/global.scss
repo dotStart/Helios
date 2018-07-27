@@ -15,5 +15,5 @@
  * limitations under the License.
  */
 .helios {
-  -fx-background-color: themeVariable("helios+theme://io.dotstart.github.helios/backgroundColor");
+  -fx-background-color: #{themeVariable("helios+theme://io.dotstart.github.helios/backgroundColor")};
 }
