@@ -29,11 +29,16 @@ public class DirectMemoryBinding<T> extends MemoryBinding<T> {
     private RemoteGameProcess process;
     private boolean isValid;
     private List<InvalidationListener> invalidationListeners;
+    private final Class<T> conversionType;
 
-    protected DirectMemoryBinding(long offset, MemoryBindingType type, long length, long flags, RemoteGameProcess process) {
+    protected DirectMemoryBinding(long offset, MemoryBindingType type, long length, long flags, RemoteGameProcess process, Class<T> clazz) {
         super(offset, type, length, flags, new DirectMemoryAccessor());
         this.process = process;
         this.invalidationListeners = new ArrayList<>();
+        this.conversionType = clazz;
+        if (!conversionType.isPrimitive()) {
+            throw new IllegalArgumentException("memory can only be bound to primitive types.");
+        }
     }
 
     @Override
