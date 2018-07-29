@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 #{componentClass('helios+component://io.github.dotstart.helios.ui.module.component/TimerComponent')} {
-  @include component();
+  @extend %component;
 
   .label {
     -fx-font-size: 2em; // TODO: Replace with font chooser

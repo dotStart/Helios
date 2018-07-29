@@ -22,7 +22,7 @@
  * Provides a mixin which is typically referenced by component stylesheets in order to provide
  * consistent behavior.
  */
-@mixin component() {
+%component {
   &:horizontal {
     -fx-alignment: center-left;
   }
