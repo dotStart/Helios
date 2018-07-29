@@ -38,7 +38,7 @@ public @interface BindAddress {
     /**
      * The offset from the process's base address.
      *
-     * @return a fixed memory offset
+     * @return an array of offsets.
      */
-    Pointer[] value();
+    long[] value();
 }

@@ -15,7 +15,6 @@
  */
 package io.github.dotstart.helios.game.di;
 
-import com.google.inject.Injector;
 import com.google.inject.MembersInjector;
 import io.github.dotstart.helios.game.RemoteGameProcess;
 
