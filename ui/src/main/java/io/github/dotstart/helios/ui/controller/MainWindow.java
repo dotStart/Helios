@@ -68,6 +68,9 @@ public class MainWindow implements Initializable {
    */
   @Override
   public void initialize(URL location, ResourceBundle resources) {
+    this.componentPane.prefWidthProperty().bind(Bindings.selectDouble(this.layout, "width"));
+    this.componentPane.prefHeightProperty().bind(Bindings.selectDouble(this.layout, "height"));
+
     this.layout.addListener((observable, oldValue, newValue) -> {
       if (oldValue != null) {
         logger.debug("Removing bindings from previous timer layout");

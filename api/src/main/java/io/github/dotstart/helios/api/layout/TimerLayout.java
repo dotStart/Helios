@@ -19,6 +19,8 @@ package io.github.dotstart.helios.api.layout;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import io.github.dotstart.helios.api.node.Component;
 import io.github.dotstart.helios.api.node.ComponentNode;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
@@ -37,9 +39,47 @@ import javafx.scene.Node;
  */
 public class TimerLayout {
 
+  private final DoubleProperty width = new SimpleDoubleProperty(1280);
+  private final DoubleProperty height = new SimpleDoubleProperty(50);
+
   private final ObservableList<Node> nodes = FXCollections.observableArrayList();
   private final ObservableList<Node> nodeView = FXCollections
       .unmodifiableObservableList(this.nodes);
+
+  /**
+   * Retrieves the total timer width to which all components will be confined.
+   *
+   * @return a width.
+   */
+  public double getWidth() {
+    return this.width.get();
+  }
+
+  @NonNull
+  public DoubleProperty widthProperty() {
+    return this.width;
+  }
+
+  public void setWidth(double width) {
+    this.width.set(width);
+  }
+
+  /**
+   * Retrieves the total timer height to which all components will be confined.
+   *
+   * @return a height.
+   */
+  public double getHeight() {
+    return this.height.get();
+  }
+
+  public DoubleProperty heightProperty() {
+    return this.height;
+  }
+
+  public void setHeight(double height) {
+    this.height.set(height);
+  }
 
   /**
    * Appends a new component at the end of the layout.
