@@ -20,7 +20,10 @@ import com.google.inject.Inject;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import io.github.dotstart.helios.api.layout.TimerLayout;
 import io.github.dotstart.helios.api.node.layout.SwitchLayout;
+import io.github.dotstart.helios.api.time.TimeManager;
 import io.github.dotstart.helios.ui.module.component.TimerComponent;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.beans.binding.Bindings;
@@ -28,6 +31,12 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.SeparatorMenuItem;
+import javafx.scene.input.MouseButton;
+import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -40,6 +49,7 @@ public class MainWindow implements Initializable {
 
   private static final Logger logger = LogManager.getFormatterLogger(MainWindow.class);
 
+  private final TimeManager timeManager;
   private final TimerComponent defaultComponent;
   private final ObjectProperty<TimerLayout> layout = new SimpleObjectProperty<>();
 
@@ -47,7 +57,8 @@ public class MainWindow implements Initializable {
   private SwitchLayout componentPane;
 
   @Inject
-  public MainWindow(@NonNull TimerComponent defaultComponent) {
+  public MainWindow(@NonNull TimeManager timeManager, @NonNull TimerComponent defaultComponent) {
+    this.timeManager = timeManager;
     this.defaultComponent = defaultComponent;
   }
 
@@ -75,6 +86,87 @@ public class MainWindow implements Initializable {
 
     // TODO: Load previously loaded layout
     this.layout.set(this.createDefaultLayout());
+
+    // initialize the context menu
+    var menu = this.createMenu();
+
+    this.componentPane.setOnContextMenuRequested(
+        event -> menu.show(this.componentPane, event.getScreenX(), event.getScreenY()));
+    this.componentPane.setOnMouseClicked(event -> {
+      if (event.getButton() == MouseButton.PRIMARY) {
+        menu.hide();
+      }
+    });
+  }
+
+  @NonNull
+  private ContextMenu createMenu() {
+    var menu = new ContextMenu();
+
+    var item = new MenuItem("Start Timer");
+    item.setOnAction(event -> this.timeManager.getTimerGroup().start());
+    menu.getItems().add(item);
+
+    item = new MenuItem("Pause Timer");
+    item.setOnAction(event -> this.timeManager.getTimerGroup().pause());
+    menu.getItems().add(item);
+
+    item = new MenuItem("Un-Pause Timer");
+    item.setOnAction(event -> this.timeManager.getTimerGroup().unpause());
+    menu.getItems().add(item);
+
+    item = new MenuItem("Stop Timer");
+    item.setOnAction(event -> this.timeManager.getTimerGroup().stop());
+    menu.getItems().add(item);
+
+    item = new MenuItem("Reset Timer");
+    item.setOnAction(event -> this.timeManager.reset());
+    menu.getItems().add(item);
+
+    menu.getItems().add(new SeparatorMenuItem());
+
+    item = new MenuItem("Open Splits");
+    item.setDisable(true); // TODO
+    menu.getItems().add(item);
+
+    item = new MenuItem("Save Splits");
+    item.setDisable(true); // TODO
+    menu.getItems().add(item);
+
+    item = new MenuItem("Close Splits");
+    item.setDisable(true); // TODO
+    menu.getItems().add(item);
+
+    menu.getItems().add(new SeparatorMenuItem());
+
+    // dev option - only available if ScenicView is available
+    try {
+      var scenicClass = Class.forName("org.scenicview.ScenicView");
+      var m = MethodHandles.lookup()
+          .findStatic(scenicClass, "show", MethodType.methodType(void.class, Parent.class));
+
+      item = new MenuItem("Show ScenicView");
+      item.setOnAction(event -> {
+        try {
+          m.invoke(this.componentPane);
+        } catch (Throwable ex) {
+          logger.warn("failed to open ScenicView", ex);
+        }
+      });
+      menu.getItems().add(item);
+
+      logger.info("ScenicView is available within the Class-Path - dev options have been enabled");
+    } catch (ClassNotFoundException ignore) {
+    } catch (IllegalAccessException | NoSuchMethodException ex) {
+      logger.warn(
+          "incompatible ScenicView version: org.scenicview.ScenicView#show(Parent) is not defined");
+    }
+
+    item = new MenuItem("Quit");
+    item.setOnAction(event -> ((Stage) this.componentPane.getScene().getWindow()).close());
+    menu.getItems().add(item);
+
+    return menu;
   }
 
   /**
