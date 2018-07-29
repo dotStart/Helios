@@ -33,7 +33,7 @@ import java.lang.annotation.Target;
 @Documented
 public @interface BindProcess {
     /**
-     * Regex matcher for the process name.
+     * @return process name regex
      */
     @RegEx
     String value();

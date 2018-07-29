@@ -25,13 +25,13 @@ import javax.annotation.Nullable;
 public interface GameProcess {
 
     /**
-     * Get the handle for the given process.
+     * @return the handle for the given process
      */
     @Nonnull
     ProcessHandle getHandle();
 
     /**
-     * Get the base memory address of the process to bypass ASLR
+     * @return the base memory address of the process to bypass ASLR
      */
     @Nonnegative
     long getBaseAddress();

@@ -20,8 +20,6 @@ import javax.annotation.Nonnull;
 
 /**
  * Represents a method of memory access
- *
- * @param <T> a java primitive type to convert memory to.
  */
 @FunctionalInterface
 public interface MemoryWriter {

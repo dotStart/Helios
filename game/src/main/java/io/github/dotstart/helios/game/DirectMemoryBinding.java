@@ -17,8 +17,6 @@ package io.github.dotstart.helios.game;
 
 import io.github.dotstart.helios.api.game.MemoryBinding;
 import io.github.dotstart.helios.api.game.MemoryBindingType;
-import io.github.dotstart.helios.api.game.MemoryReader;
-import io.github.dotstart.helios.api.game.MemoryWriter;
 import javafx.beans.InvalidationListener;
 import javafx.beans.value.ChangeListener;
 
@@ -32,7 +30,7 @@ public class DirectMemoryBinding<T> extends MemoryBinding<T> {
     private final Class<T> conversionType;
 
     protected DirectMemoryBinding(long offset, MemoryBindingType type, long length, long flags, RemoteGameProcess process, Class<T> clazz) {
-        super(offset, type, length, flags, new DirectMemoryAccessor());
+        super(offset, type, length, flags, process.directAccessor);
         this.process = process;
         this.invalidationListeners = new ArrayList<>();
         this.conversionType = clazz;
@@ -43,14 +41,6 @@ public class DirectMemoryBinding<T> extends MemoryBinding<T> {
 
     @Override
     protected native void execute0();
-
-    private static class DirectMemoryAccessor implements MemoryReader, MemoryWriter {
-        @Override
-        public native byte[] read(long offset, long length);
-
-        @Override
-        public native byte[] write(long offset, byte[] value);
-    }
 
     @Override
     public void addListener(ChangeListener changeListener) {

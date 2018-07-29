@@ -22,7 +22,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Marks a method as an event handler in a call to {@link EventGroup#createHandlers(Class)}.
+ * Marks a method as an event handler in a call to {@link EventGroup#subscribe(Class)}.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
