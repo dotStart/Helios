@@ -21,6 +21,7 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 import io.github.dotstart.helios.api.layout.TimerLayout;
 import io.github.dotstart.helios.api.node.layout.SwitchLayout;
 import io.github.dotstart.helios.api.time.TimeManager;
+import io.github.dotstart.helios.api.time.Timer.State;
 import io.github.dotstart.helios.ui.module.component.TimerComponent;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
@@ -102,25 +103,38 @@ public class MainWindow implements Initializable {
   @NonNull
   private ContextMenu createMenu() {
     var menu = new ContextMenu();
+    var state = Bindings.<State>select(this.timeManager.timerGroupProperty(), "state");
 
     var item = new MenuItem("Start Timer");
     item.setOnAction(event -> this.timeManager.getTimerGroup().start());
+    item.disableProperty().bind(Bindings.createBooleanBinding(
+        () -> state.get() != State.WAITING,
+        state
+    ));
     menu.getItems().add(item);
 
-    item = new MenuItem("Pause Timer");
-    item.setOnAction(event -> this.timeManager.getTimerGroup().pause());
-    menu.getItems().add(item);
-
-    item = new MenuItem("Un-Pause Timer");
-    item.setOnAction(event -> this.timeManager.getTimerGroup().unpause());
+    item = new MenuItem("(Un-)Pause Timer");
+    item.setOnAction(event -> this.timeManager.getTimerGroup().togglePause());
+    item.disableProperty().bind(Bindings.createBooleanBinding(
+        () -> state.get() == State.WAITING || state.get() == State.STOPPED,
+        state
+    ));
     menu.getItems().add(item);
 
     item = new MenuItem("Stop Timer");
     item.setOnAction(event -> this.timeManager.getTimerGroup().stop());
+    item.disableProperty().bind(Bindings.createBooleanBinding(
+        () -> state.get() != State.RUNNING && state.get() != State.PAUSED,
+        state
+    ));
     menu.getItems().add(item);
 
     item = new MenuItem("Reset Timer");
     item.setOnAction(event -> this.timeManager.reset());
+    item.disableProperty().bind(Bindings.createBooleanBinding(
+        () -> state.get() == State.WAITING,
+        state
+    ));
     menu.getItems().add(item);
 
     menu.getItems().add(new SeparatorMenuItem());
