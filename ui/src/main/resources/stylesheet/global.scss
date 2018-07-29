@@ -40,4 +40,8 @@
     -fx-font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif;
     -fx-text-fill: #{themeVariable("helios+theme://io.dotstart.github.helios/textColor")};
   }
+
+  .context-menu .label { // TODO: Make context menu themable?
+    -fx-text-fill: #3c3c3c;
+  }
 }
