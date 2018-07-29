@@ -96,6 +96,8 @@ public class SwitchLayout extends StackPane {
         break;
     }
 
+    this.contentPane.getStyleClass().add("content");
+
     Bindings.bindContent(this.contentPane.getChildren(), this.node);
     this.getChildren().add(this.contentPane);
   }
