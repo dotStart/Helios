@@ -27,7 +27,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 import javafx.beans.binding.Bindings;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.css.PseudoClass;
 import javafx.css.Styleable;
 import javafx.scene.Node;
@@ -82,8 +85,9 @@ public interface Component<N extends Node & ComponentNode, C> {
    * @param direction a new layout direction.
    */
   static void setNodeDirection(@NonNull Collection<? extends Node> nodes,
-      @NonNull Direction direction) {
-    nodes.forEach((n) -> setNodeDirection(n, direction));
+      @Nullable Direction direction) {
+    final Direction dir = direction == null ? Direction.HORIZONTAL : direction;
+    nodes.forEach((n) -> setNodeDirection(n, dir));
   }
 
   /**
@@ -120,15 +124,22 @@ public interface Component<N extends Node & ComponentNode, C> {
    * @param direction a direction observable.
    * @param nodes a collection of child nodes.
    */
+  @SuppressWarnings("unchecked")
   static void registerRecursiveNodeUpdater(@NonNull ObservableValue<Direction> direction,
       @NonNull Collection<? extends Node> nodes) {
-    direction.addListener((observable, oldValue, newValue) -> {
-      if (newValue == null) {
-        newValue = Direction.HORIZONTAL;
-      }
+    ChangeListener<Direction> listener = (observable, oldValue, newValue) -> setNodeDirection(nodes, newValue);
 
-      setNodeDirection(nodes, newValue);
-    });
+    if (nodes instanceof ObservableList) {
+      var ob = (ObservableList<? extends Node>) nodes;
+      ob.addListener((ListChangeListener<Node>) c -> {
+        while (c.next()) {
+          setNodeDirection(c.getAddedSubList(), direction.getValue());
+        }
+      });
+    }
+
+    direction.addListener(listener);
+    listener.changed(direction, null, direction.getValue());
   }
 
   /**
