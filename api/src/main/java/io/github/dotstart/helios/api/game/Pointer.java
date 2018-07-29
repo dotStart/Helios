@@ -15,30 +15,21 @@
  */
 package io.github.dotstart.helios.api.game;
 
-import com.google.inject.BindingAnnotation;
-
-import javax.annotation.Nonnegative;
 import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 
 /**
- * Represents a binding to a particular memory address. May annotate either a
- * <p>byte[]</p> field with a fixed size, or any java primitive. In the latter case,
- * the equivalent of a C++ <p>reinterpret_cast</p> will be applied to a memory
- * region the same size or smaller than the byte-aligned size of the primitive.
+ * Represents a layer of indirection, with an offset applied to the dereference
+ * of the pointer address. When specified as the second or later argument in the
+ * value array for {@link BindAddress}, the {@link #value()} parameter is ignored
+ * and the offset is added to the result of dereferencing the previous pointer
+ * in the array. If this is the final pointer in the array, the {@link #offset()}
+ * parameter signifies that the address should be dereferenced to return the value.
  */
-@BindingAnnotation
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.FIELD)
 @Documented
-public @interface BindAddress {
-    /**
-     * The offset from the process's base address.
-     *
-     * @return a fixed memory offset
-     */
-    Pointer[] value();
+public @interface Pointer {
+    long value() default 0L;
+    long offset() default 0L;
 }
