@@ -112,6 +112,11 @@ public class SwitchLayout extends StackPane {
     return this.direction.getValue();
   }
 
+  @NonNull
+  public ObservableValue<Direction> directionProperty() {
+    return this.direction;
+  }
+
   /**
    * Forcefully updates the direction of this layout component.
    *
