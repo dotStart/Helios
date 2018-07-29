@@ -20,6 +20,6 @@
   fx:id="componentPane"
   fx:controller="io.github.dotstart.helios.ui.controller.MainWindow"
   styleClass="helios"
-  prefHeight="400.0"
-  prefWidth="600.0">
+  prefWidth="1028"
+  prefHeight="50">
 </SwitchLayout>
