@@ -18,17 +18,21 @@ package io.github.dotstart.helios.game;
 import io.github.dotstart.helios.api.game.GameProcess;
 import io.github.dotstart.helios.api.game.MemoryBinding;
 import io.github.dotstart.helios.api.game.MemoryBindingType;
+import io.github.dotstart.helios.api.game.MemoryReader;
+import io.github.dotstart.helios.api.game.MemoryWriter;
 
 public class RemoteGameProcess implements GameProcess {
     private final ProcessHandle handle;
     private long process;
 
+    DirectMemoryAccessor directAccessor;
 
     private static final boolean isWin32 = System.getProperty("os.name").toLowerCase().contains("windows");
 
     public RemoteGameProcess(ProcessHandle handle) {
         this.handle = handle;
         attach();
+        directAccessor = new DirectMemoryAccessor(process);
     }
 
     @Override
@@ -56,4 +60,19 @@ public class RemoteGameProcess implements GameProcess {
     }
 
     private native void attach();
+
+
+    static class DirectMemoryAccessor implements MemoryReader, MemoryWriter {
+        private long process;
+
+        DirectMemoryAccessor(long process) {
+            this.process = process;
+        }
+
+        @Override
+        public native byte[] read(long offset, long length);
+
+        @Override
+        public native byte[] write(long offset, byte[] value);
+    }
 }

@@ -40,6 +40,5 @@ public @interface BindAddress {
      *
      * @return a fixed memory offset
      */
-    @Nonnegative
-    long value();
+    Pointer[] value();
 }
