@@ -30,6 +30,8 @@ import io.github.dotstart.helios.api.theme.variable.Variable;
 import io.github.dotstart.helios.api.theme.variable.VariableDefinition;
 import io.github.dotstart.helios.api.theme.variable.color.ColorVariableDefinition;
 import io.github.dotstart.helios.api.theme.variable.color.SolidColor;
+import io.github.dotstart.helios.api.theme.variable.size.BorderSizeVariableDefinition;
+import io.github.dotstart.helios.api.theme.variable.size.SizeUnit;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
@@ -65,6 +67,7 @@ public class ThemeManager implements AutoCloseable {
    * component).
    */
   private static final Set<VariableDefinition> GLOBALS = Set.of(
+      // Colors
       new ColorVariableDefinition(
           "helios+theme://io.dotstart.github.helios/backgroundColor",
           "Background Color", "Specifies the window background color",
@@ -74,6 +77,14 @@ public class ThemeManager implements AutoCloseable {
           "helios+theme://io.dotstart.github.helios/textColor",
           "Text Color", "Specifies the standard text color",
           SolidColor.WHITE
+      ),
+
+      // Margins & Paddings
+      new BorderSizeVariableDefinition(
+          "helios+theme://io.dotstart.github.helios/componentPadding",
+          "Component Padding",
+          "Specifies the padding (inner spacing) given to each respective component",
+          5, 5, 5, 5, SizeUnit.PIXELS
       )
   );
 

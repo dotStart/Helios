@@ -15,23 +15,6 @@
  * limitations under the License.
  */
 
-/**
- * Component Mixin
- * ---------------
- *
- * Provides a mixin which is typically referenced by component stylesheets in order to provide
- * consistent behavior.
- */
-%component {
-  &:horizontal {
-    -fx-alignment: center-left;
-  }
-
-  &:vertical {
-    -fx-alignment: top-center;
-  }
-}
-
 .helios {
   -fx-background-color: #{themeVariable("helios+theme://io.dotstart.github.helios/backgroundColor")};
 
@@ -43,5 +26,24 @@
 
   .context-menu .label { // TODO: Make context menu themable?
     -fx-text-fill: #3c3c3c;
+  }
+}
+
+/**
+ * Component Mixin
+ * ---------------
+ *
+ * Provides a mixin which is typically referenced by component stylesheets in order to provide
+ * consistent behavior.
+ */
+%component {
+  -fx-padding: #{themeVariable("helios+theme://io.dotstart.github.helios/componentPadding")};
+
+  &:horizontal {
+    -fx-alignment: center-left;
+  }
+
+  &:vertical {
+    -fx-alignment: top-center;
   }
 }
