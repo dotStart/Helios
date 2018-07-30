@@ -95,5 +95,5 @@ public interface Variable {
    * @return a css compatible version of this variable.
    */
   @NonNull
-  Object toCss();
+  String toCss();
 }
