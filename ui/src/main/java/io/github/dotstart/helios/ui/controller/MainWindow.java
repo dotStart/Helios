@@ -108,6 +108,7 @@ public class MainWindow implements Initializable {
     var menu = new ContextMenu();
     var state = Bindings.<State>select(this.timeManager.timerGroupProperty(), "state");
 
+    // === Timer Menu ===
     var subMenu = new Menu("Timer");
     menu.getItems().add(subMenu);
 
@@ -147,6 +148,7 @@ public class MainWindow implements Initializable {
     ));
     subMenu.getItems().add(item);
 
+    // === Splits Menu ===
     subMenu = new Menu("Splits");
     menu.getItems().add(subMenu);
 
@@ -162,6 +164,7 @@ public class MainWindow implements Initializable {
     item.setDisable(true); // TODO
     subMenu.getItems().add(item);
 
+    // === Layout Menu ===
     subMenu = new Menu("Layout");
     menu.getItems().add(subMenu);
 
