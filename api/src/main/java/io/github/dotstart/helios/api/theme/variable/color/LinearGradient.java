@@ -18,6 +18,7 @@ package io.github.dotstart.helios.api.theme.variable.color;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import io.netty.buffer.ByteBuf;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import javafx.beans.property.BooleanProperty;
@@ -189,8 +190,8 @@ public class LinearGradient implements Color {
      */
     @NonNull
     private String toCssInstruction() {
-      return String
-          .format("%s %.2f%%", this.color.get().toCssInstruction(), this.position.get() * 100);
+      return String.format(Locale.ENGLISH, "%s %.2f%%", this.color.get().toCssInstruction(),
+          this.position.get() * 100);
     }
 
     private void read(@NonNull ByteBuf buf) {
