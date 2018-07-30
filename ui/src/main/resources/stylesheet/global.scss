@@ -14,6 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+$systemBackgroundColor: #ffffff;
+$systemAccentColor: #ea4444;
+$systemTextColor: #2e2e2e;
+$systemAccentTextColor: #ffffff;
+
+$systemDisabledOpacity: 0.4;
 
 .helios {
   -fx-background-color: #{themeVariable("helios+theme://io.dotstart.github.helios/backgroundColor")};
@@ -24,8 +30,77 @@
     -fx-text-fill: #{themeVariable("helios+theme://io.dotstart.github.helios/textColor")};
   }
 
-  .context-menu .label { // TODO: Make context menu themable?
-    -fx-text-fill: #3c3c3c;
+  .context-menu {
+    -fx-background-color: $systemBackgroundColor;
+    -fx-background-radius: 5px;
+
+    > .scroll-arrow {
+      -fx-background-color: transparent;
+    }
+
+    > .scroll-arrow:hover {
+      -fx-background-color: $systemAccentColor;
+      -fx-text-fill: $systemAccentTextColor;
+    }
+
+    &:show-mnemonics > .mnemonic-underline {
+      -fx-stroke: $systemTextColor;
+    }
+  }
+
+  .menu {
+    -fx-background-color: transparent;
+    -fx-padding: 3px 8px;
+
+    &:disabled {
+      -fx-opacity: $systemDisabledOpacity;
+    }
+
+    &:show-mnemonics > .mnemonic-underline {
+      -fx-stroke: $systemTextColor;
+    }
+
+    > .right-container > .arrow {
+      -fx-background-color: $systemAccentColor;
+      -fx-shape: "M0,-4L4,0L0,4Z";
+      -fx-scale-shape: false;
+    }
+
+    &:focused > .right-container > .arrow {
+      -fx-background-color: $systemBackgroundColor;
+    }
+  }
+
+  .menu-item {
+    -fx-background-color: transparent;
+    -fx-padding: 3px 8px;
+
+    > .label {
+      -fx-padding: 0em 0.5em 0em 0em;
+      -fx-text-fill: $systemTextColor;
+    }
+
+    &:focused {
+      -fx-background-color: $systemAccentColor;
+      -fx-text-fill: $systemAccentTextColor;
+    }
+
+    &:focused > .label {
+      -fx-text-fill: $systemAccentTextColor;
+    }
+
+    &:disabled {
+      -fx-background-color: transparent;
+
+      > .label {
+        -fx-text-fill: $systemTextColor;
+        -fx-opacity: $systemDisabledOpacity;
+      }
+    }
+
+    &:show-mnemonics > .mnemonic-underline {
+      -fx-stroke: $systemTextColor;
+    }
   }
 }
 
