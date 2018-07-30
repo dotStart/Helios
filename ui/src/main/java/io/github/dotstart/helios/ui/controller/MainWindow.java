@@ -34,8 +34,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
@@ -108,53 +108,59 @@ public class MainWindow implements Initializable {
     var menu = new ContextMenu();
     var state = Bindings.<State>select(this.timeManager.timerGroupProperty(), "state");
 
-    var item = new MenuItem("Start Timer");
+    var subMenu = new Menu("Timer");
+    menu.getItems().add(subMenu);
+
+    var item = new MenuItem("Start");
     item.setOnAction(event -> this.timeManager.getTimerGroup().start());
     item.disableProperty().bind(Bindings.createBooleanBinding(
         () -> state.get() != State.WAITING,
         state
     ));
-    menu.getItems().add(item);
+    subMenu.getItems().add(item);
 
-    item = new MenuItem("(Un-)Pause Timer");
+    item = new MenuItem();
+    item.textProperty().bind(Bindings.createStringBinding(
+        () -> state.get() == State.PAUSED ? "Unpause" : "Pause",
+        state
+    ));
     item.setOnAction(event -> this.timeManager.getTimerGroup().togglePause());
     item.disableProperty().bind(Bindings.createBooleanBinding(
         () -> state.get() == State.WAITING || state.get() == State.STOPPED,
         state
     ));
-    menu.getItems().add(item);
+    subMenu.getItems().add(item);
 
-    item = new MenuItem("Stop Timer");
+    item = new MenuItem("Stop");
     item.setOnAction(event -> this.timeManager.getTimerGroup().stop());
     item.disableProperty().bind(Bindings.createBooleanBinding(
         () -> state.get() != State.RUNNING && state.get() != State.PAUSED,
         state
     ));
-    menu.getItems().add(item);
+    subMenu.getItems().add(item);
 
-    item = new MenuItem("Reset Timer");
+    item = new MenuItem("Reset");
     item.setOnAction(event -> this.timeManager.reset());
     item.disableProperty().bind(Bindings.createBooleanBinding(
         () -> state.get() == State.WAITING,
         state
     ));
-    menu.getItems().add(item);
+    subMenu.getItems().add(item);
 
-    menu.getItems().add(new SeparatorMenuItem());
+    subMenu = new Menu("Splits");
+    menu.getItems().add(subMenu);
 
-    item = new MenuItem("Open Splits");
+    item = new MenuItem("Open File ...");
     item.setDisable(true); // TODO
-    menu.getItems().add(item);
+    subMenu.getItems().add(item);
 
-    item = new MenuItem("Save Splits");
+    item = new MenuItem("Save to File ...");
     item.setDisable(true); // TODO
-    menu.getItems().add(item);
+    subMenu.getItems().add(item);
 
-    item = new MenuItem("Close Splits");
+    item = new MenuItem("Close");
     item.setDisable(true); // TODO
-    menu.getItems().add(item);
-
-    menu.getItems().add(new SeparatorMenuItem());
+    subMenu.getItems().add(item);
 
     // dev option - only available if ScenicView is available
     try {
