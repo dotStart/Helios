@@ -162,6 +162,25 @@ public class MainWindow implements Initializable {
     item.setDisable(true); // TODO
     subMenu.getItems().add(item);
 
+    subMenu = new Menu("Layout");
+    menu.getItems().add(subMenu);
+
+    item = new MenuItem("Edit");
+    item.setDisable(true); // TODO
+    subMenu.getItems().add(item);
+
+    item = new MenuItem("Open File ...");
+    item.setDisable(true); // TODO
+    subMenu.getItems().add(item);
+
+    item = new MenuItem("Save File ...");
+    item.setDisable(true); // TODO
+    subMenu.getItems().add(item);
+
+    item = new MenuItem("Close");
+    item.setDisable(true); // TODO
+    subMenu.getItems().add(item);
+
     // dev option - only available if ScenicView is available
     try {
       var scenicClass = Class.forName("org.scenicview.ScenicView");
