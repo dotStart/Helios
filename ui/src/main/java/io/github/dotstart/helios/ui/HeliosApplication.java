@@ -32,8 +32,10 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.config.Configurator;
 
 /**
  * Provides a JavaFX compatible application entry point.
@@ -65,6 +67,11 @@ public class HeliosApplication extends Application {
         .orElse("0.0.0+dev"));
     System.out.println("Published under the terms of the Apache License, Version 2.0");
     System.out.println();
+
+    if (Boolean.getBoolean("io.github.dotstart.helios.ui.enableDebugLogging")) {
+      Configurator.setRootLevel(Level.DEBUG);
+      logger.warn("debug logging is enabled");
+    }
 
     logger.info("nano epoch: %d", System.nanoTime());
     var t = new Thread(HeliosApplication::benchmarkTimerResolution);
