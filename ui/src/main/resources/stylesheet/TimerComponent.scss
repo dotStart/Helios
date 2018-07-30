@@ -20,4 +20,16 @@
   .label {
     -fx-font-size: 2em; // TODO: Replace with font chooser
   }
+
+  &:waiting .label {
+    -fx-text-fill: #{themeVariable('helios+component://io.github.dotstart.helios.ui.module.component/TimerComponent/waitingColor')};
+  }
+
+  &:running .label {
+    -fx-text-fill: #{themeVariable('helios+component://io.github.dotstart.helios.ui.module.component/TimerComponent/runningColor')};
+  }
+
+  &:paused .label {
+    -fx-text-fill: #{themeVariable('helios+component://io.github.dotstart.helios.ui.module.component/TimerComponent/pausedColor')};
+  }
 }

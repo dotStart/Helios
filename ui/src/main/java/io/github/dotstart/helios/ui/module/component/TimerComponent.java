@@ -21,9 +21,16 @@ import com.google.inject.Singleton;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import io.github.dotstart.helios.api.node.StatelessComponent;
+import io.github.dotstart.helios.api.theme.variable.VariableDefinition;
+import io.github.dotstart.helios.api.theme.variable.color.ColorVariableDefinition;
+import io.github.dotstart.helios.api.theme.variable.color.LinearGradient;
+import io.github.dotstart.helios.api.theme.variable.color.LinearGradient.Stop;
+import io.github.dotstart.helios.api.theme.variable.color.SolidColor;
 import io.github.dotstart.helios.api.time.TimeManager;
 import io.github.dotstart.helios.ui.module.component.node.TimerComponentNode;
 import java.io.InputStream;
+import java.util.Collections;
+import java.util.Set;
 
 /**
  * <p>Provides a timer component.</p>
@@ -37,6 +44,37 @@ import java.io.InputStream;
  */
 @Singleton
 public class TimerComponent implements StatelessComponent<TimerComponentNode> {
+
+  private static final Set<VariableDefinition> variables = Set.of(
+      new ColorVariableDefinition(
+          "helios+component://io.github.dotstart.helios.ui.module.component/TimerComponent/waitingColor",
+          "Standby Color", "Specifies the standby timer text color",
+          new LinearGradient(
+              LinearGradient.Direction.TOP_TO_BOTTOM,
+              new Stop(SolidColor.WHITE, 0),
+              new Stop(new SolidColor(128, 128, 128), 1)
+          )
+      ),
+      new ColorVariableDefinition(
+          "helios+component://io.github.dotstart.helios.ui.module.component/TimerComponent/runningColor",
+          "Running Color",
+          "Specifies the standard running timer text color (when no prior time is known or comparison is disabled)",
+          new LinearGradient(
+              LinearGradient.Direction.TOP_TO_BOTTOM,
+              new Stop(SolidColor.WHITE, 0),
+              new Stop(new SolidColor(128, 128, 128), 1)
+          )
+      ),
+      new ColorVariableDefinition(
+          "helios+component://io.github.dotstart.helios.ui.module.component/TimerComponent/pausedColor",
+          "Paused Color", "Specifies the standard paused timer text color",
+          new LinearGradient(
+              LinearGradient.Direction.TOP_TO_BOTTOM,
+              new Stop(new SolidColor(128, 128, 128), 0),
+              new Stop(new SolidColor(180, 180, 180), 1)
+          )
+      )
+  );
 
   private final TimeManager timeManager;
 
@@ -72,9 +110,21 @@ public class TimerComponent implements StatelessComponent<TimerComponentNode> {
     return new TimerComponentNode(this, this.timeManager);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Nullable
   @Override
   public InputStream getStyleResource() {
     return this.getClass().getResourceAsStream("/stylesheet/TimerComponent.scss");
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @NonNull
+  @Override
+  public Set<VariableDefinition> getStyleVariables() {
+    return Collections.unmodifiableSet(variables);
   }
 }
