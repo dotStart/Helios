@@ -17,12 +17,15 @@
 package io.github.dotstart.helios.ui.controller;
 
 import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.google.inject.Singleton;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import io.github.dotstart.helios.api.layout.TimerLayout;
 import io.github.dotstart.helios.api.node.layout.SwitchLayout;
 import io.github.dotstart.helios.api.time.TimeManager;
 import io.github.dotstart.helios.api.time.Timer.State;
 import io.github.dotstart.helios.ui.module.component.TimerComponent;
+import io.github.dotstart.helios.ui.utility.WindowUtility;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.net.URL;
@@ -31,6 +34,7 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.ContextMenu;
@@ -46,10 +50,12 @@ import org.apache.logging.log4j.Logger;
  *
  * @author <a href="mailto:johannesd@torchmind.com">Johannes Donath</a>
  */
+@Singleton
 public class MainWindow implements Initializable {
 
   private static final Logger logger = LogManager.getFormatterLogger(MainWindow.class);
 
+  private final Provider<FXMLLoader> fxmlLoaderProvider;
   private final TimeManager timeManager;
   private final TimerComponent defaultComponent;
   private final ObjectProperty<TimerLayout> layout = new SimpleObjectProperty<>();
@@ -58,7 +64,12 @@ public class MainWindow implements Initializable {
   private SwitchLayout componentPane;
 
   @Inject
-  public MainWindow(@NonNull TimeManager timeManager, @NonNull TimerComponent defaultComponent) {
+  public MainWindow(
+      @NonNull Provider<FXMLLoader> fxmlLoaderProvider,
+      @NonNull TimeManager timeManager,
+      @NonNull TimerComponent defaultComponent) {
+    this.fxmlLoaderProvider = fxmlLoaderProvider;
+
     this.timeManager = timeManager;
     this.defaultComponent = defaultComponent;
   }
@@ -169,7 +180,7 @@ public class MainWindow implements Initializable {
     menu.getItems().add(subMenu);
 
     item = new MenuItem("Edit");
-    item.setDisable(true); // TODO
+    item.setOnAction(event -> this.onEditLayout());
     subMenu.getItems().add(item);
 
     item = new MenuItem("Open File ...");
@@ -227,6 +238,13 @@ public class MainWindow implements Initializable {
     var layout = new TimerLayout();
     layout.addComponent(this.defaultComponent);
     return layout;
+  }
+
+  private void onEditLayout() {
+    var window = WindowUtility
+        .createWindow(this.fxmlLoaderProvider.get(), "/fxml/LayoutWindow.fxml");
+    window.setTitle("Edit Timer Layout");
+    window.show();
   }
 
   /**
