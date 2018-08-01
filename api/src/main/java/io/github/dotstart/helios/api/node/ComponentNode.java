@@ -17,6 +17,7 @@
 package io.github.dotstart.helios.api.node;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
 import javafx.css.Styleable;
 import javafx.scene.Node;
 
@@ -58,6 +59,20 @@ public interface ComponentNode<N extends Node & ComponentNode<N, C>, C> extends 
    */
   @NonNull
   C configuration();
+
+  /**
+   * <p>Creates a configuration UI node which permits the customization of this node within the
+   * layout settings panel.</p>
+   *
+   * <p>When null is returned, the component is assumed to provide no configuration options and a
+   * hint about this fact will be displayed to users instead.</p>
+   *
+   * @return a configuration node.
+   */
+  @Nullable
+  default Node createConfigurationNode() {
+    return null;
+  }
 
   /**
    * Appends the component class name to the specified stylable component node.
